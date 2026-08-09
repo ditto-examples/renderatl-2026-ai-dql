@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+*.tsbuildinfo
+
+# Keep the committed Anvil build (see vendor/anvil/VENDORED.md)
+!vendor/anvil/dist/

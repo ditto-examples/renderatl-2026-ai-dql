@@ -1,0 +1,4 @@
+packages:
+  - 'vendor/anvil'
+allowBuilds:
+  esbuild: true

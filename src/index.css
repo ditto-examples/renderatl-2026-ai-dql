@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+@import '@dittolive/anvil/theme.css';
+
+/* Ditto's typefaces (all shipped with Anvil) */
+@import '@dittolive/anvil/font/inter/inter.css';
+@import '@dittolive/anvil/font/kairos/kairos.css';
+@import '@dittolive/anvil/font/aeonikFono/aeonik.css';
+@import '@dittolive/anvil/font/ibmPlexMono/ibmPlexMono.css';
+
+/*
+  Anvil's compiled components live under node_modules (symlinked workspace
+  pkg), which Tailwind's auto source-detection ignores. Point at the real
+  build so its utility classes get generated. Also scan our own app.
+*/
+@source '../vendor/anvil/dist/esm';
+@source './';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text-primary, var(--foreground));
+}
