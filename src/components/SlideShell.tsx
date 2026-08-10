@@ -1,5 +1,6 @@
 import { motion, type Variants } from 'motion/react'
 import type { CSSProperties, ReactNode } from 'react'
+import dittoLogo from '../assets/ditto_full-logotype_white.svg'
 
 /**
  * Full-viewport wrapper every slide sits in. Provides the shared dark
@@ -37,6 +38,13 @@ export function SlideShell({ children, className, style }: SlideShellProps) {
       style={style}
     >
       {children}
+      {/* Subtle Ditto brand mark, bottom-right of every slide. */}
+      <img
+        src={dittoLogo}
+        alt="Ditto"
+        aria-hidden="true"
+        className="pointer-events-none absolute right-6 bottom-5 z-20 h-auto w-24 opacity-45 select-none md:w-28"
+      />
     </motion.div>
   )
 }

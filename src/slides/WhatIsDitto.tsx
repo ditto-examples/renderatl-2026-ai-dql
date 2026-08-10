@@ -122,28 +122,39 @@ export default function WhatIsDitto() {
           })}
         </motion.div>
 
-        {/* Transports — echoes the mesh in Ditto's presence viewer */}
+        {/* The Rainbow Connection — how the mesh switches transports */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.6 }}
-          className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2"
+          className="mt-8 rounded-xl p-5"
+          style={{
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(255,255,255,0.08)',
+          }}
         >
-          <span className="text-xs font-medium tracking-[0.15em] text-text-tertiary uppercase">
-            Syncs over
-          </span>
-          {TRANSPORTS.map((t) => (
-            <span key={t.label} className="flex items-center gap-2">
-              <span
-                className="block h-2.5 w-2.5 rounded-full"
-                style={{ background: t.color }}
-              />
-              <span className="text-sm text-text-secondary">{t.label}</span>
-            </span>
-          ))}
+          <p className="text-sm leading-relaxed text-text-secondary">
+            <span className="font-semibold" style={{ color: ACCENT }}>
+              The Rainbow Connection:
+            </span>{' '}
+            a transport multiplexer switches between these connections on the fly
+            — each color a different transport — always using whichever is
+            fastest and falling back the moment one drops.
+          </p>
+          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+            {TRANSPORTS.map((t) => (
+              <span key={t.label} className="flex items-center gap-2">
+                <span
+                  className="block h-2.5 w-2.5 rounded-full"
+                  style={{ background: t.color, boxShadow: `0 0 10px 0 ${t.color}80` }}
+                />
+                <span className="text-sm text-text-secondary">{t.label}</span>
+              </span>
+            ))}
+          </div>
         </motion.div>
 
-        <p className="mt-10 text-xs tracking-wide text-text-tertiary">
+        <p className="mt-8 text-xs tracking-wide text-text-tertiary">
           Press <kbd className="font-mono">→</kbd> to continue ·{' '}
           <kbd className="font-mono">←</kbd> to go back
         </p>

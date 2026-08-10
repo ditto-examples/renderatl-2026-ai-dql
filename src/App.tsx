@@ -6,7 +6,17 @@ import Home from './slides/Home'
 import ColdOpen from './slides/ColdOpen'
 import Intro from './slides/Intro'
 import WhatIsDitto from './slides/WhatIsDitto'
-import RainbowConnection from './slides/RainbowConnection'
+import Problem from './slides/Problem'
+import ExistingTools from './slides/ExistingTools'
+import AiOverview from './slides/AiOverview'
+import BuildingBenchy from './slides/BuildingBenchy'
+import Investigating from './slides/Investigating'
+import FlowDiagram from './slides/FlowDiagram'
+import HowWeFixed from './slides/HowWeFixed'
+import Payoff from './slides/Payoff'
+import BroaderWin from './slides/BroaderWin'
+import WorkedVsNot from './slides/WorkedVsNot'
+import Takeaways from './slides/Takeaways'
 
 export default function App() {
   const { setTheme } = useTheme()
@@ -26,7 +36,17 @@ export default function App() {
         <Route path="/1" element={<ColdOpen />} />
         <Route path="/2" element={<Intro />} />
         <Route path="/3" element={<WhatIsDitto />} />
-        <Route path="/4" element={<RainbowConnection />} />
+        <Route path="/4" element={<Problem />} />
+        <Route path="/5" element={<ExistingTools />} />
+        <Route path="/6" element={<AiOverview />} />
+        <Route path="/7" element={<BuildingBenchy />} />
+        <Route path="/8" element={<Investigating />} />
+        <Route path="/9" element={<FlowDiagram />} />
+        <Route path="/10" element={<HowWeFixed />} />
+        <Route path="/11" element={<Payoff />} />
+        <Route path="/12" element={<BroaderWin />} />
+        <Route path="/13" element={<WorkedVsNot />} />
+        <Route path="/14" element={<Takeaways />} />
       </Routes>
     </AnimatePresence>
   )

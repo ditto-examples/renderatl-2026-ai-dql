@@ -11,9 +11,9 @@ const START_PATH = '/1'
 const THEME_CYCLE: Theme[] = ['dark', 'light', 'system']
 
 const STATS = [
-  { label: 'Before', value: '7,159 ms', tone: 'text-fill-critical' },
-  { label: 'After', value: '16 ms', tone: 'text-fill-success' },
-  { label: 'Speedup', value: '447×', tone: 'text-fill-brand-primary' },
+  { label: 'Before', value: '2,253 ms', tone: 'text-fill-critical' },
+  { label: 'After', value: '1.84 ms', tone: 'text-fill-success' },
+  { label: 'Speedup', value: '1,226×', tone: 'text-fill-brand-primary' },
 ]
 
 function ThemeToggle() {
@@ -71,7 +71,7 @@ export default function Home() {
               A performance story
             </p>
             <Heading level={1} className="font-kairos text-5xl md:text-7xl">
-              From 7,159&nbsp;ms to 16&nbsp;ms
+              From 2,253&nbsp;ms to 1.84&nbsp;ms
             </Heading>
             <p className="text-text-secondary mt-6 max-w-2xl text-lg">
               How AI-assisted instrumentation turned one of Ditto's heaviest

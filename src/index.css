@@ -21,6 +21,13 @@ body,
   height: 100%;
 }
 
+/* Larger base type so slides read from the back of the room. Everything on
+   the slides is rem/em based, so this scales the whole deck proportionally.
+   Dial between ~106% and ~120% to taste. */
+html {
+  font-size: 112.5%;
+}
+
 body {
   margin: 0;
   background: var(--background);

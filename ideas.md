@@ -1,109 +1,202 @@
-So I'm giving a talk next week at RenderATL. My theory of the talk is this:
+# RenderATL 2026 — Talk Outline
 
-I've spent a lot of time this past 3 months on a question: not whether we could make it faster, but where the effort would pay off most — the quickest wins, at the lowest risk of regression, for the least time spent changing and testing. I went in confident we had real room to improve; what I didn't expect was just how much. Following the investigation process I'll walk you through in this talk — using AI to map our code paths into visual flows, then measuring them with tools we built along the way — we took one of our heaviest queries, a COUNT over a large dataset, from 7,159 ms down to 16 ms. I knew the ceiling was high. I was genuinely, pleasantly surprised by how high. This session is the story of how we got there, and how those numbers changed the way we ship.
+## Theory of the talk
 
-I work at Ditto you can learn about Ditto here:
-https://docs.ditto.live/home/about-ditto
-https://docs.ditto.live/key-concepts/databases-and-collections
-https://docs.ditto.live/key-concepts/document-model
-https://docs.ditto.live/key-concepts/accessing-data
-https://docs.ditto.live/key-concepts/syncing-data
-https://docs.ditto.live/key-concepts/authentication-and-authorization
-https://docs.ditto.live/key-concepts/mesh-networking
+I've spent a lot of time this past 3 months on a question: not whether we could
+make it faster, but where the effort would pay off most — the quickest wins, at
+the lowest risk of regression, for the least time spent changing and testing. I
+went in confident we had real room to improve; what I didn't expect was just how
+much. Following the investigation process I'll walk you through in this talk —
+using AI to map our code paths into visual flows, then measuring them with tools
+we built along the way — we took one of our heaviest queries, a COUNT over a
+large dataset, from 2,253 ms down to 1.84 ms. I knew the ceiling was high. I was
+genuinely, pleasantly surprised by how high. This session is the story of how we
+got there, and how those numbers changed the way we ship.
 
-Ditto is a Edge based database that allows users to sync via a mesh network. You need to understand Ditto to help me. The Database uses a SQL like query language called DQL. You can learn more about it here:
-https://docs.ditto.live/dql/dql
+**Constraints:** 20 minutes. ~1–2 min/slide → ~12 slides. Be concise.
 
-So I'm thinking that this talk needs to be broken down into parts. It's 20 minutes long, so I need to be concise.
+**The through-line (say it, prove it twice):** AI is powerful when it's grounded
+in real, measured data and driven by someone with domain context — and it fails
+when it isn't. Proven by the skepticism story (slide 9) and the "what didn't
+work" list (slide 11).
 
-Here is my current outline ideas:
+## About Ditto (reference)
 
-- Home Page
+Edge-based database that syncs via a mesh network; SQL-like query language (DQL).
+- https://docs.ditto.live/home/about-ditto
+- https://docs.ditto.live/key-concepts/mesh-networking
+- https://docs.ditto.live/dql/dql
 
-  - Name of the talk and brief description of what the talk is about.  Clicking the button to start the talk goes to page 1 - the cold open.
+---
 
-  - there is an animation in the presence viewer of the VS code plugin /Users/labeaaa/Developer/ditto-vsc-es that I would like to have in the background of the home page.  It's a simple animation of random squares which some move around the screen.
+# The 12-slide flow
 
-- Page 1
+## Slide 1 — Home / Title  ✅ built
 
-  - Cold open - describe the message Adam our CEO sent me on Slack about performance issues with Android that a potential client was benchmarking Ditto.  I was asked to investigate and figure out if the numbers were right, and then if they were right, to figure out how to make them better.  This was on a Thursday. 
+- Name of the talk + brief description. "Start the talk" → cold open.
+- Background: drifting-squares animation ported from the presence viewer
+  (VS Code plugin at /Users/labeaaa/Developer/ditto-vsc-es).
 
-  - Explain this talk is about how I investigated the problem, what we found, and how some of the ways we fixed it.  I will also talk about how I used AI to help me investigate the problem.
+## Slide 2 — Cold open (the Slack message)  ✅ built
 
-- Page 2
+- Adam (CEO) DMs me: a prospect benchmarked us on Android; query performance and
+  memory look bad; figure out if the numbers are even right, and if so, fix it.
+  It was a Thursday.
+- Frame the talk: how I investigated, what I found, how I fixed it — and how I
+  used AI at every step.
 
-  - Introduction
+## Slide 3 — Who am I  ✅ built
 
-    - Who am I
+- Developer Advocate at Ditto; software engineer for 30 years.
+- Couchbase (Principal Engineer & Developer Advocate); EY (Assistant Director /
+  Technical Lead — Developer Experience/Gaia Platform, and Mobile Technologies).
+- Shipped through every era: dot-com, Y2K, Web 2.0, mobile, cloud — now AI.
 
-      - profile picture is in the assets folder - aaron-profile.jpeg.
+## Slide 4 — What is Ditto  ✅ built
 
-      - I'm a Developer Advocate at Ditto, however I've been a Software Engineer for 30 years.  
+- Mobile database with edge connectivity and CRDTs built in; the only one to pair
+  peer-to-peer edge connectivity with CRDTs.
+- Four pillars + the Rainbow Connection (transport multiplexer) callout.
+- Keep under a minute.
 
-      - I have worked at several companies from small companies to large companies like EY (Ernst & Young) where I was the Technical Lead of the Mobile Technologies division in Client Technology.  Prior to Ditto I worked at Couchbase as a Developer Advocate and a Principal Software Engineer.  
+## Slide 5 — The Problem
 
-      - I've lived through the dot com era, Y2K, web 2.0, the rise of mobile, the cloud era, and now we are entering the AI era.  I've seen a lot of changes in the software industry and I have a lot of experience to share.
+- The prospect benchmarked two things:
+  - **Query performance.**
+  - **Memory usage** — inject a document every 250 ms and observe it on another
+    device via our observer API.
+  - Report: query performance significantly slower than expected; memory spiking.
+- Thursday afternoon, planned with my boss Skyler. The report only gave us the
+  *rules* they tested — not the dataset.
+- Decision: **tackle query performance first**, deal with memory once we had a
+  grip on queries.
+- What I needed to get started:
+  - Data shaped similarly (not the exact data). Skyler had used the MongoDB
+    **MFlix** sample dataset for a small JS benchmark tool.
+  - His **45 queries** against MFlix — reuse them on Android.
+  - Ability to: build the SDK from source on the fly; build against any Ditto SDK
+    version (features differ, e.g. indexing); test against other engines (SQLite);
+    run query-engine profiling and capture results.
 
-- Page 3
+## Slide 6 — "Don't we already have tools?"
 
-  - Before we start, we should briefly review what is Ditto. we can use this documuentation page to help summorize it:  https://docs.ditto.live/home/about-ditto
+- Yes — **Ditto Test Protocol (DTP)**: complex tooling that tests the SDK in the
+  **Mesh Lab** (50 devices, soon 100).
+- But DTP tests **networking/sync, not the query engine**, and it's very
+  opinionated / Ditto-only — I couldn't compare against SQLite.
+- So I was going to have to build something.
+- (Credibility beat: we have serious tooling — just not for this.)
 
-  - We need this content to be less than 3 minutes long, so we need to be concise and to the point.
+## Slide 7 — What I did with AI (the spine)
 
-- Page 3
+- Two buckets, previewed up front so the payoff is clear:
+  - **Build** — AI as a force multiplier for infrastructure.
+  - **Investigate** — AI as an analysis partner, grounded in real data.
 
-- The Problem
+## Slide 8 — Building the harness with AI
 
-  - Adam's message on Slack - we have problems with both query and memory on Android when a potential client was benchmarking Ditto.
+- **Name it clearly up front:** I call the whole suite **Benchy** — after the
+  little boat 3D printers print to benchmark themselves. (I'll say "Benchy" a lot;
+  it's the umbrella name for everything I built.) The name is already introduced
+  on Slide 7's Build panel.
+- **The real unlock (lead with this):** I wrote custom **Skill files** that
+  taught the AI not just how to do a task, but how to write **Python scripts to
+  automate** that task — so the work became repeatable, not one-off. This is why
+  AI acted as a force multiplier.
+- Used AI + agent skills to build **custom Ditto SDK versions on the fly** for
+  specific processor types to run in my lab.
+- Built a suite of scripts + apps that could:
+  - dynamically switch Ditto SDK versions (or test other platforms)
+  - a library of benchmarks (data + queries) across industry sample datasets
+  - test query performance
+  - instrument the entire application
+  - profile query statements and compare across Query Engine versions
+  - produce flame graphs
+  - **"Benchy Portal"** — a dashboard showing Query and Memory (AI cut build time)
+- First version came together in a few hours; I code-reviewed and fixed a few
+  things. Ran the first benchmarks on local physical hardware — the numbers
+  weren't great.
+- Spoken color: gradle + adapter pattern to swap SDK/platform; Android-only focus
+  (that's what the prospect used); AI researched a fix for **thermal throttling**
+  on the bench hardware.
 
-  - Adam asked me to investigate, figure out if the numbers were right (we thought they might be off), and then if they were right, to figure out how to make them better. This was on a Thursday.
+## Slide 9 — Investigating with AI (measure)
 
-  - Friday morning, talk with my boss Skyler get actual data from the team that was working with the potential client to get the report. The report didn't share with us the dataset they used only the rules that they were testing.
+- Friday night. I'm not a query engineer and I'm new to the engine's codebase.
+  Answer due Monday. Can't ask the team to explain the whole engine.
+- Two ways to see where the time went:
+  1. **Instrument** — Perfetto traces (Android standard) show where time is spent.
+  2. **Profile** — DQL profiling pinpoints what the engine spends time on.
+- **Visual:** `benchy-profiling-zoom.png` — Benchy Portal's side-by-side
+  execution-plan comparison (full scan of 400 rows → idScan returns 1; 32 ms →
+  433 µs). The artifact that helped the query team pinpoint problems.
 
-    - They benchmarked two things - Query performance - Memory Usage by injecting a document every 250 ms and then listening to that on another device through an observer API we have. - The report showed that the query performance was significantly slower than expected, and memory usage was spiking.
+## Slide 9b ("AI drew the map") — the diagrams
 
-- How can I even start to investigate this?
+- **First AI tip:** have AI turn each Perfetto trace into a **code-flow diagram**
+  so I could see the whole path at once.
+- **The skepticism story (thesis beat):** the team assumed I'd had AI *scan the
+  code*. I hadn't — the diagrams came from **real traces**. That's when they
+  trusted them. → Trust came from real data.
+- **InfoSec note:** the real AI diagram (`distinct-values-ditto.png`) exposes file
+  paths, function names, line numbers, and branch/ticket IDs — NOT shippable.
+  Decision: show a **clean, generic summary diagram** built in-deck (industry-
+  standard stages only: FFI → engine → planner → scan → project → distinct →
+  result, with hotspots), and say verbally that the real ones are far more
+  detailed. No source artifact ships.
 
-  - I need something fast to look into this. What do I need to get started?
-  
-    - I needed data, it didn't need to be the same exact data, it just needed to be shaped in a similar way. In most document based databases it's usually about the amount of fields and how many items are nested in arrays or what we refer to as maps in the world of CRDTs.
+## Slide 10 - How we fixed it
 
-    - I had a sample dataset that was similar that we used for demoing off the MongoDb connector on another project.
+- Put a war room together of engineers including the query team, members from the SDK team, and members from other parts of engineering
+- We looked at improvements we were already working on and tried to get those done faster by using AI
+  - We knew we had a new encoding engine called Archive that would be a lot faster than the old one CBOR.
+- The query team changed the way we store tombstone metadata
+- The query team changed the internal storage/schema on how we stored data
+- Every PR went through the benchy tool before we even merged it so we could see the performance changes as soon as possible - this was managed by AI reading a text file of PR and commit Ids as everything was running in my local mesh lab
 
-    - I needed to create normal queries that one would run to test performance. Worked with my boss to create a set of queries that would be representative of what a user might do. We created a set of 48 queries that we would run against the dataset.
+## Slide 11 — The payoff: 2,253 ms → 1.84 ms
 
-    - I needed to be able to measure the performance of those queries.
-      - Ditto already has a performance tool called DTP, and it works in the Ditto Mesh Lab, a very impressive set of over 50 mobile devices that we use to fully test our mesh networking technology. DTP was attractive but it wasn't built to do what I wanted to do.
+- The `count_all` aggregation over the POS dataset.
+- Animated count-down from 2,253 ms to 1.84 ms; **1,226×** faster
+  (portal shows 1,225.88×). "Over two seconds → real time."
+- The specific fixes were covered generically on Slide 10 (no internals shown).
 
-    - I needed something that could work with multiple versions of our SDK and I wanted to be able to run the benchmarks against other database platforms like SQLite so I could compare performance. DTP was engineered to only work with Ditto.
+## Slide 12 — The whole board moved
 
-    - Decided I needed to build my own simple tool to test the query performance.
-      - I needed it to be able to work with multiple versions of our SDK.
+- Not just one query: the same fixes lifted the entire aggregation workload.
+- Hero: `count-benchmarks.png` (cropped — no build labels / versions / hardware
+  codenames). `count_all` led at 1,226×; every other aggregation got faster too.
 
-      - I was going to focus on Android only because that's what they reported they were using.
+## Slide 13 — What worked vs what didn't with AI
 
-      - I could use some gradle magic and the adapter pattern to swap out SDK versions or even platform versions and that would solve the problem of running tests against multiple versions of our SDK or even multiple platforms.
+- **Worked:**
+  - building tooling fast (SDK-from-source, harness, Benchy Portal, flame graphs)
+  - drawing code-flow diagrams from real traces
+  - narrowing down suspect code from profiling data
+  - researching hardware issues (thermal throttling)
+- **Didn't work (AI was only "OK" at investigating):**
+  - lacked context for *why* code worked the way it did — e.g. flagged
+    intentional logging code as "bad" when it wasn't
+  - a team of subagents trying speculative caching ideas we couldn't validate
+  - non-experts "vibe-coding" fixes to a query engine
+  - asking AI to fully understand DQL from the source alone
+- The pattern: grounded + expert-driven = wins; ungrounded/speculative = misses.
+- This is the payoff of the "(More on that later.)" teaser on Slide 7.
 
-    - I realized early on I needed to be able to swap out the dataset, so my first job for AI was to create a format for our benchmarks. I gave it my requirements and sample dataset and explained we needed to do some work before running the benchmark, we needed to run the benchmark, and then we neeeded to be able to do some clean up afterward and all of this should be flexible. While AI was working on that, I started to finish up my design document of a poc of the simply benchmark tool I wanted to create.
-  
-    - Creating the first design and testing it went very quickly with AI help. I wrote the design document with no AI help and then fed it to the AI to ask for feedback, we did a couple itterations on the design (I used superpowers planning plugin to help with that).
+## Slide 14 — Takeaways / how it changed how we ship
 
-    - The first verison of the benchmark tool came together within a few hours and after I code reviewed it and fixed a couple of things I thought should be done a little differently, I was able to run the first set of benchmarks on a device I had locally (physical hardware is important for these kind of benchmark tests).
+- Heading: **Measure. Don't guess.**
+- 1. **Instrument first** — AI is only as good as the data you feed it.
+- 2. **Give AI the context** — AI can investigate too, but only with the same
+  understanding the authors have; in big codebases, invest in docs written for AI.
+- 3. **Make performance a habit** — every release now runs through Benchy before
+  it ships. (This is the "how it changed how we ship.")
+- Closer: "The regression that ate a weekend? We'd catch it now — before it
+  ships." + Thank you / Aaron LaBeau · Developer Advocate, Ditto.
 
-    - So the numbers weren't great.
+---
 
-- The Investigation
+# Parked (not building slides for these)
 
-  - I had a simple tool and I had numbers, they weren't great but how do I even begin to investigate this? I'm not a query engineer, and I'm new to the query engine code base. By this time it's Friday night and it's not like I can just ask them to explain the entire engine to me. I needed an answer by Monday on what was going on.  
-
-  - So I needed a way to figure out which parts of the code that could be causing the problem.  I instantly went to instrumentation.  Perfetto is the standard tool that Android uses.
-
-  - If I record my benchmarks running I can then just get a trace of the code and where the time is being spent.  If I do that then I can have AI help me start to look at areas that maybe we have a problem.
-
-  - First AI tip:  With instrumentation, I could have zoom into a part of the instrumentation and then have it draw a diagram of the flow of the code.  I had it build diagrams as SVG files and then conver them to PNG so I can could embed them into markdown files and use them for research on my investigation.
-
-  - I will note that the minute I showed up to a meeting and showed some of the diagrams a lot of the development team was sceptical about the diagrams because they thought I had AI scan the code to generate the diagrams.  When I explained that I had instrumented the code and then had AI help me draw the diagrams, they were much more receptive to the idea.
-
-  - Next I updated the program to pull down DQL profiling information.  This allowed me to see what the query engine was spending time doing.  I could then use these along with my instrumentation to start to figure out places in the code I could research.
-
-  
+- Deep memory investigation — one sentence max ("memory's another talk").
+- DTP internals — one credibility beat is enough.

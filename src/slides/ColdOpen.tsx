@@ -209,7 +209,7 @@ function Message({ reduceMotion }: { reduceMotion: boolean }) {
     >
       <Timestamp />
       <div
-        className="min-w-0 space-y-3 text-[15px] leading-relaxed"
+        className="min-w-0 space-y-3 text-base leading-relaxed"
         style={{ color: C.body }}
       >
         <p>
