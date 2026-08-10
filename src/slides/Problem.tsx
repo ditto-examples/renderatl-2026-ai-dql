@@ -49,7 +49,7 @@ export default function Problem() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 12%, #171216 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 12%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-5xl flex-col justify-center px-6 py-14">
@@ -84,8 +84,8 @@ export default function Problem() {
                 variants={card}
                 className="rounded-xl p-6"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(248,113,113,0.25)',
+                  background: 'rgba(var(--deck-surface-rgb),0.04)',
+                  border: '1px solid rgba(var(--deck-bad-rgb),0.25)',
                 }}
               >
                 <div className="flex items-center gap-3">
@@ -115,7 +115,7 @@ export default function Problem() {
         >
           {CONSTRAINTS.map((c) => (
             <li key={c} className="flex items-start gap-3 text-text-secondary">
-              <span className="mt-2 block h-1.5 w-1.5 flex-none rounded-full bg-[#eaf044]" />
+              <span className="mt-2 block h-1.5 w-1.5 flex-none rounded-full bg-[var(--deck-accent)]" />
               <span>{c}</span>
             </li>
           ))}
@@ -128,7 +128,7 @@ export default function Problem() {
           transition={{ delay: 1.0, duration: 0.6 }}
         >
           First problem: I had no way to even{' '}
-          <span className="font-semibold" style={{ color: '#eaf044' }}>
+          <span className="font-semibold" style={{ color: 'var(--deck-accent)' }}>
             measure
           </span>{' '}
           this.

@@ -4,7 +4,7 @@ import { motion, type Variants } from 'motion/react'
 import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 const TAKEAWAYS = [
   {
@@ -45,7 +45,7 @@ export default function Takeaways() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 15%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 15%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-4xl flex-col justify-center px-6 py-10">
@@ -72,7 +72,7 @@ export default function Takeaways() {
             <motion.li key={k.t} variants={item} className="flex gap-4">
               <span
                 className="flex h-7 w-7 flex-none items-center justify-center rounded-full text-sm font-semibold"
-                style={{ background: `${ACCENT}1a`, color: ACCENT }}
+                style={{ background: `rgba(var(--deck-accent-rgb),0.1)`, color: ACCENT }}
               >
                 {i + 1}
               </span>
@@ -98,7 +98,7 @@ export default function Takeaways() {
 
         <motion.div
           className="mt-12 border-t pt-5"
-          style={{ borderColor: 'rgba(255,255,255,0.1)' }}
+          style={{ borderColor: 'rgba(var(--deck-surface-rgb),0.1)' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.6 }}

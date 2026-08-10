@@ -35,6 +35,37 @@ body {
 }
 
 /* ============================================================
+   Deck theme tokens — used by the slides so they render in both
+   light and dark. RGB triplets let every rgba(...) tint adapt.
+   Light is the :root default; dark overrides below.
+   ============================================================ */
+:root {
+  --deck-bg-from: #ffffff;
+  --deck-bg-to: #eef2f7;
+  --deck-surface-rgb: 15, 23, 42; /* slate-900 → visible on light */
+  --deck-accent: #6b7500; /* readable dark-lime on light */
+  --deck-accent-rgb: 107, 117, 0;
+  --deck-good: #15803d;
+  --deck-good-rgb: 21, 128, 61;
+  --deck-bad: #dc2626;
+  --deck-bad-rgb: 220, 38, 38;
+}
+:root[data-theme='dark'],
+:root[data-applied-theme='dark'],
+:root[data-theme='dark-high-contrast'],
+:root[data-applied-theme='dark-high-contrast'] {
+  --deck-bg-from: #14181d;
+  --deck-bg-to: #0b0d10;
+  --deck-surface-rgb: 255, 255, 255;
+  --deck-accent: #eaf044;
+  --deck-accent-rgb: 234, 240, 68;
+  --deck-good: #4ec98a;
+  --deck-good-rgb: 78, 201, 138;
+  --deck-bad: #f87171;
+  --deck-bad-rgb: 248, 113, 113;
+}
+
+/* ============================================================
    Ditto CTA button — recreation of the "Schedule a demo"
    button on ditto.com. See src/components/DittoButton.tsx.
    ============================================================ */

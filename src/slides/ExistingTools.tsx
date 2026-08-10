@@ -5,7 +5,7 @@ import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 import meshLab from '../assets/mesh-lab.jpg'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 const GAPS = [
   'Built to test networking & sync — not the query engine.',
@@ -28,7 +28,7 @@ export default function ExistingTools() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 12%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 12%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-6 py-12">
@@ -60,7 +60,7 @@ export default function ExistingTools() {
               style={{
                 maxHeight: '62vh',
                 objectFit: 'cover',
-                border: '1px solid rgba(255,255,255,0.10)',
+                border: '1px solid rgba(var(--deck-surface-rgb),0.10)',
               }}
             />
             <figcaption className="mt-3 text-sm text-text-tertiary">
@@ -89,7 +89,7 @@ export default function ExistingTools() {
                 <li key={g} className="flex items-start gap-3">
                   <span
                     className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full text-xs"
-                    style={{ background: 'rgba(248,113,113,0.15)', color: '#f87171' }}
+                    style={{ background: 'rgba(var(--deck-bad-rgb),0.15)', color: 'var(--deck-bad)' }}
                     aria-hidden="true"
                   >
                     ✕

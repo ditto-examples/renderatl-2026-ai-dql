@@ -5,7 +5,7 @@ import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 import benchyProfiling from '../assets/benchy-profiling-zoom.png'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 const STEPS = [
   {
@@ -42,7 +42,7 @@ export default function Investigating() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 80% 10%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 80% 10%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-6 py-8">
@@ -78,7 +78,7 @@ export default function Investigating() {
                 <motion.li key={s.title} variants={item} className="flex gap-3">
                   <span
                     className="flex h-6 w-6 flex-none items-center justify-center rounded-full text-sm font-semibold"
-                    style={{ background: `${ACCENT}1a`, color: ACCENT }}
+                    style={{ background: `rgba(var(--deck-accent-rgb),0.1)`, color: ACCENT }}
                   >
                     {i + 1}
                   </span>
@@ -107,12 +107,12 @@ export default function Investigating() {
               style={{
                 maxHeight: '64vh',
                 objectFit: 'contain',
-                border: '1px solid rgba(255,255,255,0.10)',
+                border: '1px solid rgba(var(--deck-surface-rgb),0.10)',
               }}
             />
             <figcaption className="mt-2 text-sm text-text-tertiary">
               Profiling, side by side: a full{' '}
-              <span style={{ color: '#f87171' }}>scan of 400 rows</span> becomes
+              <span style={{ color: 'var(--deck-bad)' }}>scan of 400 rows</span> becomes
               an <span style={{ color: ACCENT }}>idScan that returns 1</span> —
               32 ms → 433 µs.
             </figcaption>

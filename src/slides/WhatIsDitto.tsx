@@ -4,7 +4,7 @@ import { motion, type Variants } from 'motion/react'
 import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 const PILLARS = [
   {
@@ -61,7 +61,7 @@ export default function WhatIsDitto() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 85% 10%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 85% 10%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-5xl flex-col justify-center px-6 py-16">
@@ -99,13 +99,13 @@ export default function WhatIsDitto() {
                 variants={card}
                 className="flex gap-4 rounded-xl p-5"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'rgba(var(--deck-surface-rgb),0.04)',
+                  border: '1px solid rgba(var(--deck-surface-rgb),0.08)',
                 }}
               >
                 <span
                   className="flex h-10 w-10 flex-none items-center justify-center rounded-lg"
-                  style={{ background: `${ACCENT}1a`, color: ACCENT }}
+                  style={{ background: `rgba(var(--deck-accent-rgb),0.1)`, color: ACCENT }}
                 >
                   <Icon />
                 </span>
@@ -129,8 +129,8 @@ export default function WhatIsDitto() {
           transition={{ delay: 0.9, duration: 0.6 }}
           className="mt-8 rounded-xl p-5"
           style={{
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            background: 'rgba(var(--deck-surface-rgb),0.03)',
+            border: '1px solid rgba(var(--deck-surface-rgb),0.08)',
           }}
         >
           <p className="text-sm leading-relaxed text-text-secondary">

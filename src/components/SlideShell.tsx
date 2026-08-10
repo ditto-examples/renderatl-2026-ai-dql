@@ -1,6 +1,8 @@
 import { motion, type Variants } from 'motion/react'
 import type { CSSProperties, ReactNode } from 'react'
-import dittoLogo from '../assets/ditto_full-logotype_white.svg'
+import { useTheme } from '@dittolive/anvil'
+import dittoLogoWhite from '../assets/ditto_full-logotype_white.svg'
+import dittoLogoDark from '../assets/ditto_full-logotype_dark.svg'
 
 /**
  * Full-viewport wrapper every slide sits in. Provides the shared dark
@@ -28,6 +30,10 @@ interface SlideShellProps {
 }
 
 export function SlideShell({ children, className, style }: SlideShellProps) {
+  const { resolvedTheme } = useTheme()
+  const isDark =
+    resolvedTheme === 'dark' || resolvedTheme === 'dark-high-contrast'
+
   return (
     <motion.div
       variants={variants}
@@ -38,9 +44,9 @@ export function SlideShell({ children, className, style }: SlideShellProps) {
       style={style}
     >
       {children}
-      {/* Subtle Ditto brand mark, bottom-right of every slide. */}
+      {/* Subtle Ditto brand mark, bottom-right of every slide (theme-aware). */}
       <img
-        src={dittoLogo}
+        src={isDark ? dittoLogoWhite : dittoLogoDark}
         alt="Ditto"
         aria-hidden="true"
         className="pointer-events-none absolute right-6 bottom-5 z-20 h-auto w-24 opacity-45 select-none md:w-28"

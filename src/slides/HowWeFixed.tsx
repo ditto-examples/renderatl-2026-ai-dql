@@ -4,7 +4,7 @@ import { motion, type Variants } from 'motion/react'
 import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 // Generic categories only — no library or internal names.
 const CATEGORIES = [
@@ -40,7 +40,7 @@ export default function HowWeFixed() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 12%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 12%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-6 py-8">
@@ -77,8 +77,8 @@ export default function HowWeFixed() {
               variants={cardV}
               className="rounded-xl p-4"
               style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: 'rgba(var(--deck-surface-rgb),0.04)',
+                border: '1px solid rgba(var(--deck-surface-rgb),0.08)',
               }}
             >
               <p className="font-semibold text-text-primary">{c.t}</p>
@@ -93,8 +93,8 @@ export default function HowWeFixed() {
         <motion.div
           className="mt-6 rounded-2xl p-5"
           style={{
-            background: 'rgba(234,240,68,0.06)',
-            border: '1px solid rgba(234,240,68,0.22)',
+            background: 'rgba(var(--deck-accent-rgb),0.06)',
+            border: '1px solid rgba(var(--deck-accent-rgb),0.22)',
           }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -114,7 +114,7 @@ export default function HowWeFixed() {
               <div key={step} className="flex items-center gap-2">
                 <span
                   className="rounded-full px-3 py-1 text-sm text-text-secondary"
-                  style={{ background: 'rgba(255,255,255,0.06)' }}
+                  style={{ background: 'rgba(var(--deck-surface-rgb),0.06)' }}
                 >
                   {step}
                 </span>

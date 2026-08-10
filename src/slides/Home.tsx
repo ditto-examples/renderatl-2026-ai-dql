@@ -3,18 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { Button, Card, DittoLogo, Heading, useTheme, type Theme } from '@dittolive/anvil'
 import { FloatingSquaresBackground } from '../components/FloatingSquaresBackground'
-import { DARK_SQUARE_FILLS } from '../components/floatingSquares'
+import { DARK_SQUARE_FILLS, LIGHT_SQUARE_FILLS } from '../components/floatingSquares'
 import { DittoButton } from '../components/DittoButton'
 import { SlideShell } from '../components/SlideShell'
 
-const START_PATH = '/1'
+const START_PATH = '/2' // Intro (the Cold Open slide was removed)
 const THEME_CYCLE: Theme[] = ['dark', 'light', 'system']
-
-const STATS = [
-  { label: 'Before', value: '2,253 ms', tone: 'text-fill-critical' },
-  { label: 'After', value: '1.84 ms', tone: 'text-fill-success' },
-  { label: 'Speedup', value: '1,226×', tone: 'text-fill-brand-primary' },
-]
 
 function ThemeToggle() {
   const { theme, resolvedTheme, setTheme } = useTheme()
@@ -27,8 +21,17 @@ function ThemeToggle() {
   )
 }
 
+const STATS = [
+  { label: 'Before', value: '2,253 ms', tone: 'text-fill-critical' },
+  { label: 'After', value: '1.84 ms', tone: 'text-fill-success' },
+  { label: 'Speedup', value: '1,226×', tone: 'text-fill-brand-primary' },
+]
+
 export default function Home() {
   const navigate = useNavigate()
+  const { resolvedTheme } = useTheme()
+  const isDark =
+    resolvedTheme === 'dark' || resolvedTheme === 'dark-high-contrast'
 
   // Keyboard-driven start — natural for a live deck.
   useEffect(() => {
@@ -46,8 +49,9 @@ export default function Home() {
     <SlideShell>
       {/* Small drifting-squares field, ported from the Ditto presence viewer. */}
       <FloatingSquaresBackground
+        key={resolvedTheme}
         className="pointer-events-none absolute inset-0 h-full w-full"
-        fills={DARK_SQUARE_FILLS}
+        fills={isDark ? DARK_SQUARE_FILLS : LIGHT_SQUARE_FILLS}
       />
 
       <div className="relative z-10 px-6 py-12 md:px-12">
@@ -103,7 +107,7 @@ export default function Home() {
             <DittoButton onClick={() => navigate(START_PATH)}>
               Start the talk
             </DittoButton>
-            <Button variant="ghost" size="lg" onClick={() => navigate(START_PATH)}>
+            <Button variant="ghost" size="lg" onClick={() => navigate('/13')}>
               Skip to results
             </Button>
           </div>

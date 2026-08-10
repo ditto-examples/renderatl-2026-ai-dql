@@ -5,7 +5,7 @@ import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 import profileUrl from '../assets/aaron-profile.jpeg'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 const ERAS = [
   { year: '1998', name: 'The dot-com era' },
@@ -40,7 +40,7 @@ export default function Intro() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/1')
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/')
       if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/3')
     }
     window.addEventListener('keydown', onKey)
@@ -51,7 +51,7 @@ export default function Intro() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 15% 10%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 15% 10%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto grid min-h-dvh max-w-5xl grid-cols-1 items-center gap-12 px-6 py-16 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16">
@@ -72,7 +72,7 @@ export default function Intro() {
               className="h-28 w-28 flex-none rounded-2xl object-cover md:h-32 md:w-32"
               style={{
                 boxShadow:
-                  '0 0 0 1px rgba(234,240,68,0.30), 0 20px 60px -20px rgba(0,0,0,0.7)',
+                  '0 0 0 1px rgba(var(--deck-accent-rgb),0.30), 0 20px 60px -20px rgba(0,0,0,0.7)',
               }}
             />
             <div>
@@ -100,8 +100,8 @@ export default function Intro() {
                 key={c.name}
                 className="rounded-lg px-3 py-2"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'rgba(var(--deck-surface-rgb),0.04)',
+                  border: '1px solid rgba(var(--deck-surface-rgb),0.08)',
                 }}
               >
                 <span className="font-semibold text-text-primary">{c.name}</span>
@@ -132,7 +132,7 @@ export default function Intro() {
             {/* vertical spine */}
             <div
               className="absolute top-2 bottom-2 left-[7px] w-px"
-              style={{ background: 'rgba(255,255,255,0.12)' }}
+              style={{ background: 'rgba(var(--deck-surface-rgb),0.12)' }}
             />
             {ERAS.map((era) => (
               <motion.li
@@ -145,8 +145,8 @@ export default function Intro() {
                   className="absolute left-0 flex h-[15px] w-[15px] items-center justify-center rounded-full"
                   style={
                     era.current
-                      ? { background: ACCENT, boxShadow: `0 0 16px 2px ${ACCENT}80` }
-                      : { background: '#3a4048', border: '1px solid rgba(255,255,255,0.15)' }
+                      ? { background: ACCENT, boxShadow: `0 0 16px 2px rgba(var(--deck-accent-rgb),0.5)` }
+                      : { background: '#3a4048', border: '1px solid rgba(var(--deck-surface-rgb),0.15)' }
                   }
                 >
                   {era.current && (
@@ -176,7 +176,7 @@ export default function Intro() {
                 {era.current && (
                   <span
                     className="ml-1 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase"
-                    style={{ background: `${ACCENT}22`, color: ACCENT }}
+                    style={{ background: `rgba(var(--deck-accent-rgb),0.13)`, color: ACCENT }}
                   >
                     We are here
                   </span>

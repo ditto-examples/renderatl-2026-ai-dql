@@ -5,7 +5,7 @@ import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 import countBenchmarks from '../assets/count-benchmarks.png'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 export default function BroaderWin() {
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ export default function BroaderWin() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 12%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 12%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-6 py-8">
@@ -62,7 +62,7 @@ export default function BroaderWin() {
             style={{
               maxHeight: '56vh',
               objectFit: 'contain',
-              border: '1px solid rgba(255,255,255,0.10)',
+              border: '1px solid rgba(var(--deck-surface-rgb),0.10)',
             }}
           />
           <figcaption className="mt-2 text-center text-sm text-text-tertiary">

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
 import { SlideShell } from '../components/SlideShell'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 const BEFORE = 2253.06
 const AFTER = 1.84
 const SPEEDUP = 1226 // 1,225.88× rounded
@@ -55,7 +55,7 @@ export default function Payoff() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 40%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 40%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-4xl flex-col items-center justify-center px-6 py-10 text-center">
@@ -104,7 +104,7 @@ export default function Payoff() {
           </span>
           <span
             className="rounded-full px-4 py-1.5 text-lg font-semibold md:text-xl"
-            style={{ background: `${ACCENT}1a`, color: ACCENT }}
+            style={{ background: `rgba(var(--deck-accent-rgb),0.1)`, color: ACCENT }}
           >
             {SPEEDUP}× faster
           </span>

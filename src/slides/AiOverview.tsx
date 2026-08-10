@@ -4,7 +4,7 @@ import { motion, type Variants } from 'motion/react'
 import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 const BUCKETS = [
   {
@@ -57,7 +57,7 @@ export default function AiOverview() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 10%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 10%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-5xl flex-col justify-center px-6 py-14">
@@ -93,20 +93,20 @@ export default function AiOverview() {
                 variants={panel}
                 className="rounded-2xl p-7"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'rgba(var(--deck-surface-rgb),0.04)',
+                  border: '1px solid rgba(var(--deck-surface-rgb),0.08)',
                 }}
               >
                 <div className="flex items-center justify-between">
                   <span
                     className="flex h-11 w-11 items-center justify-center rounded-lg"
-                    style={{ background: `${ACCENT}1a`, color: ACCENT }}
+                    style={{ background: `rgba(var(--deck-accent-rgb),0.1)`, color: ACCENT }}
                   >
                     <Icon />
                   </span>
                   <span
                     className="font-kairos text-4xl font-semibold"
-                    style={{ color: 'rgba(255,255,255,0.14)' }}
+                    style={{ color: 'rgba(var(--deck-surface-rgb),0.14)' }}
                   >
                     {b.num}
                   </span>
@@ -120,7 +120,7 @@ export default function AiOverview() {
                     className="rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase"
                     style={
                       b.verdict.tone === 'good'
-                        ? { background: 'rgba(234,240,68,0.15)', color: ACCENT }
+                        ? { background: 'rgba(var(--deck-accent-rgb),0.15)', color: ACCENT }
                         : { background: 'rgba(245,158,11,0.15)', color: '#f59e0b' }
                     }
                   >
@@ -139,7 +139,7 @@ export default function AiOverview() {
                     <span
                       key={c}
                       className="rounded-full px-3 py-1 text-sm text-text-secondary"
-                      style={{ background: 'rgba(255,255,255,0.06)' }}
+                      style={{ background: 'rgba(var(--deck-surface-rgb),0.06)' }}
                     >
                       {c}
                     </span>

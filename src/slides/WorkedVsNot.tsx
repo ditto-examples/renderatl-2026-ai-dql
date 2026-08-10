@@ -4,9 +4,9 @@ import { motion, type Variants } from 'motion/react'
 import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 
-const GOOD = '#4ec98a'
-const BAD = '#f87171'
-const ACCENT = '#eaf044'
+const GOOD = 'var(--deck-good)'
+const BAD = 'var(--deck-bad)'
+const ACCENT = 'var(--deck-accent)'
 
 const WORKED = [
   'Building tooling, fast — the harness, SDK-from-source, Benchy Portal, flame graphs',
@@ -46,7 +46,7 @@ export default function WorkedVsNot() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 10%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 10%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-5xl flex-col justify-center px-6 py-8">
@@ -69,14 +69,14 @@ export default function WorkedVsNot() {
             color={GOOD}
             symbol="✓"
             items={WORKED}
-            tint="rgba(78,201,138,0.28)"
+            tint="rgba(var(--deck-good-rgb),0.28)"
           />
           <Column
             title="Didn't"
             color={BAD}
             symbol="✕"
             items={DIDNT}
-            tint="rgba(248,113,113,0.28)"
+            tint="rgba(var(--deck-bad-rgb),0.28)"
           />
         </div>
 
@@ -84,8 +84,8 @@ export default function WorkedVsNot() {
         <motion.div
           className="mt-6 rounded-xl p-4"
           style={{
-            background: 'rgba(234,240,68,0.06)',
-            border: '1px solid rgba(234,240,68,0.22)',
+            background: 'rgba(var(--deck-accent-rgb),0.06)',
+            border: '1px solid rgba(var(--deck-accent-rgb),0.22)',
           }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -126,7 +126,7 @@ function Column({
   return (
     <div
       className="rounded-2xl p-5"
-      style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${tint}` }}
+      style={{ background: 'rgba(var(--deck-surface-rgb),0.03)', border: `1px solid ${tint}` }}
     >
       <h3
         className="mb-4 text-lg font-semibold tracking-wide uppercase"
@@ -144,7 +144,7 @@ function Column({
           <motion.li key={text} variants={item} className="flex gap-3">
             <span
               className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full text-xs font-bold"
-              style={{ background: `${color}22`, color }}
+              style={{ background: tint, color }}
               aria-hidden="true"
             >
               {symbol}

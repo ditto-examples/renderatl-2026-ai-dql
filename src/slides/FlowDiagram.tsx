@@ -4,8 +4,8 @@ import { motion, type Variants } from 'motion/react'
 import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 
-const ACCENT = '#eaf044'
-const HOT = '#f87171'
+const ACCENT = 'var(--deck-accent)'
+const HOT = 'var(--deck-bad)'
 
 // Generic, industry-standard stages only — nothing from the codebase.
 const STAGES = [
@@ -41,7 +41,7 @@ export default function FlowDiagram() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 50% 10%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 50% 10%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-6 py-8">
@@ -76,9 +76,9 @@ export default function FlowDiagram() {
                 className="flex min-w-[9.5rem] flex-col justify-center rounded-xl px-4 py-3"
                 style={{
                   background: stage.hot
-                    ? 'rgba(248,113,113,0.08)'
-                    : 'rgba(255,255,255,0.04)',
-                  border: `1px solid ${stage.hot ? 'rgba(248,113,113,0.35)' : 'rgba(255,255,255,0.10)'}`,
+                    ? 'rgba(var(--deck-bad-rgb),0.08)'
+                    : 'rgba(var(--deck-surface-rgb),0.04)',
+                  border: `1px solid ${stage.hot ? 'rgba(var(--deck-bad-rgb),0.35)' : 'rgba(var(--deck-surface-rgb),0.10)'}`,
                 }}
               >
                 <span className="font-semibold text-text-primary">{stage.t}</span>
@@ -134,8 +134,8 @@ export default function FlowDiagram() {
         <motion.div
           className="mt-5 rounded-xl p-4"
           style={{
-            background: 'rgba(234,240,68,0.06)',
-            border: '1px solid rgba(234,240,68,0.22)',
+            background: 'rgba(var(--deck-accent-rgb),0.06)',
+            border: '1px solid rgba(var(--deck-accent-rgb),0.22)',
           }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}

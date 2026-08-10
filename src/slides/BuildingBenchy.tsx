@@ -5,7 +5,7 @@ import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
 import benchyMetrics from '../assets/benchy-metrics-zoom.png'
 
-const ACCENT = '#eaf044'
+const ACCENT = 'var(--deck-accent)'
 
 const CAPABILITIES = [
   'SDK from source, per chip',
@@ -41,7 +41,7 @@ export default function BuildingBenchy() {
     <SlideShell
       style={{
         background:
-          'radial-gradient(120% 120% at 20% 10%, #14181d 0%, #0b0d10 100%)',
+          'radial-gradient(120% 120% at 20% 10%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-6 py-6">
@@ -65,8 +65,8 @@ export default function BuildingBenchy() {
         <motion.div
           className="mt-4 rounded-xl p-3"
           style={{
-            background: 'rgba(234,240,68,0.06)',
-            border: '1px solid rgba(234,240,68,0.22)',
+            background: 'rgba(var(--deck-accent-rgb),0.06)',
+            border: '1px solid rgba(var(--deck-accent-rgb),0.22)',
           }}
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -101,8 +101,8 @@ export default function BuildingBenchy() {
               variants={chip}
               className="rounded-full px-3 py-1 text-sm text-text-secondary"
               style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: 'rgba(var(--deck-surface-rgb),0.05)',
+                border: '1px solid rgba(var(--deck-surface-rgb),0.08)',
               }}
             >
               {c}
@@ -124,7 +124,7 @@ export default function BuildingBenchy() {
             style={{
               maxHeight: '40vh',
               objectFit: 'contain',
-              border: '1px solid rgba(255,255,255,0.10)',
+              border: '1px solid rgba(var(--deck-surface-rgb),0.10)',
             }}
           />
           <figcaption className="mt-2 text-center text-sm text-text-tertiary">
@@ -140,7 +140,7 @@ export default function BuildingBenchy() {
           transition={{ delay: 0.9, duration: 0.6 }}
         >
           First run, on real hardware. The numbers{' '}
-          <span className="font-semibold" style={{ color: '#f87171' }}>
+          <span className="font-semibold" style={{ color: 'var(--deck-bad)' }}>
             weren't great.
           </span>
         </motion.p>
