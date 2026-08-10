@@ -153,11 +153,6 @@ export default function WhatIsDitto() {
             ))}
           </div>
         </motion.div>
-
-        <p className="mt-8 text-xs tracking-wide text-text-tertiary">
-          Press <kbd className="font-mono">→</kbd> to continue ·{' '}
-          <kbd className="font-mono">←</kbd> to go back
-        </p>
       </div>
     </SlideShell>
   )

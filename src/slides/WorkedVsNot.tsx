@@ -100,11 +100,6 @@ export default function WorkedVsNot() {
             misses.
           </p>
         </motion.div>
-
-        <p className="mt-5 text-xs tracking-wide text-text-tertiary">
-          Press <kbd className="font-mono">→</kbd> to continue ·{' '}
-          <kbd className="font-mono">←</kbd> to go back
-        </p>
       </div>
     </SlideShell>
   )

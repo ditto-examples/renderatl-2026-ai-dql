@@ -118,11 +118,6 @@ export default function Payoff() {
         >
           Over two seconds → real time.
         </motion.p>
-
-        <p className="mt-10 text-xs tracking-wide text-text-tertiary">
-          Press <kbd className="font-mono">→</kbd> to continue ·{' '}
-          <kbd className="font-mono">←</kbd> to go back
-        </p>
       </div>
     </SlideShell>
   )

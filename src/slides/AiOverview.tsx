@@ -149,11 +149,6 @@ export default function AiOverview() {
             )
           })}
         </motion.div>
-
-        <p className="mt-6 text-xs tracking-wide text-text-tertiary">
-          Press <kbd className="font-mono">→</kbd> to continue ·{' '}
-          <kbd className="font-mono">←</kbd> to go back
-        </p>
       </div>
     </SlideShell>
   )

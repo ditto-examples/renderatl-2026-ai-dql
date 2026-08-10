@@ -144,11 +144,6 @@ export default function BuildingBenchy() {
             weren't great.
           </span>
         </motion.p>
-
-        <p className="mt-3 text-xs tracking-wide text-text-tertiary">
-          Press <kbd className="font-mono">→</kbd> to continue ·{' '}
-          <kbd className="font-mono">←</kbd> to go back
-        </p>
       </div>
     </SlideShell>
   )
