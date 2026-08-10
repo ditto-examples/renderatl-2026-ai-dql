@@ -18,11 +18,39 @@ So I'm thinking that this talk needs to be broken down into parts. It's 20 minut
 
 Here is my current outline ideas:
 
-- Introduction
+- Home Page
 
-  - Who am
-   I
-  - What is Ditto
+  - Name of the talk and brief description of what the talk is about.  Clicking the button to start the talk goes to page 1 - the cold open.
+
+  - there is an animation in the presence viewer of the VS code plugin /Users/labeaaa/Developer/ditto-vsc-es that I would like to have in the background of the home page.  It's a simple animation of random squares which some move around the screen.
+
+- Page 1
+
+  - Cold open - describe the message Adam our CEO sent me on Slack about performance issues with Android that a potential client was benchmarking Ditto.  I was asked to investigate and figure out if the numbers were right, and then if they were right, to figure out how to make them better.  This was on a Thursday. 
+
+  - Explain this talk is about how I investigated the problem, what we found, and how some of the ways we fixed it.  I will also talk about how I used AI to help me investigate the problem.
+
+- Page 2
+
+  - Introduction
+
+    - Who am I
+
+      - profile picture is in the assets folder - aaron-profile.jpeg.
+
+      - I'm a Developer Advocate at Ditto, however I've been a Software Engineer for 30 years.  
+
+      - I have worked at several companies from small companies to large companies like EY (Ernst & Young) where I was the Technical Lead of the Mobile Technologies division in Client Technology.  Prior to Ditto I worked at Couchbase as a Developer Advocate and a Principal Software Engineer.  
+
+      - I've lived through the dot com era, Y2K, web 2.0, the rise of mobile, the cloud era, and now we are entering the AI era.  I've seen a lot of changes in the software industry and I have a lot of experience to share.
+
+- Page 3
+
+  - Before we start, we should briefly review what is Ditto. we can use this documuentation page to help summorize it:  https://docs.ditto.live/home/about-ditto
+
+  - We need this content to be less than 3 minutes long, so we need to be concise and to the point.
+
+- Page 3
 
 - The Problem
 
@@ -30,7 +58,7 @@ Here is my current outline ideas:
 
   - Adam asked me to investigate, figure out if the numbers were right (we thought they might be off), and then if they were right, to figure out how to make them better. This was on a Thursday.
 
-  - Friday morning, talk with my boss get actual data from the team that was working with the potential client to get the report. The report didn't share with us the dataset they used only the rules that they were testing.
+  - Friday morning, talk with my boss Skyler get actual data from the team that was working with the potential client to get the report. The report didn't share with us the dataset they used only the rules that they were testing.
 
     - They benchmarked two things - Query performance - Memory Usage by injecting a document every 250 ms and then listening to that on another device through an observer API we have. - The report showed that the query performance was significantly slower than expected, and memory usage was spiking.
 
@@ -78,4 +106,4 @@ Here is my current outline ideas:
 
   - Next I updated the program to pull down DQL profiling information.  This allowed me to see what the query engine was spending time doing.  I could then use these along with my instrumentation to start to figure out places in the code I could research.
 
-  - 
+  

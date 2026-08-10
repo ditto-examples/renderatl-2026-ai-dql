@@ -26,3 +26,96 @@ body {
   background: var(--background);
   color: var(--text-primary, var(--foreground));
 }
+
+/* ============================================================
+   Ditto CTA button — recreation of the "Schedule a demo"
+   button on ditto.com. See src/components/DittoButton.tsx.
+   ============================================================ */
+.ditto-btn {
+  --ditto-accent: #eaf044;
+  --ditto-dark: #0a0a0a;
+
+  display: inline-flex;
+  align-items: stretch;
+  padding: 0.375em;
+  border: none;
+  border-radius: 0.75em;
+  font-size: 1.0625rem; /* 17px base — scale via font-size */
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    filter 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.ditto-btn--primary {
+  background: var(--ditto-accent);
+  color: var(--ditto-dark);
+}
+.ditto-btn--secondary {
+  background: var(--ditto-dark);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.ditto-btn:hover {
+  filter: brightness(1.04);
+}
+.ditto-btn--primary:hover {
+  box-shadow: 0 6px 24px -8px rgba(234, 240, 68, 0.6);
+}
+.ditto-btn:active {
+  transform: translateY(1px);
+}
+.ditto-btn:focus-visible {
+  outline: 2px solid var(--ditto-accent);
+  outline-offset: 3px;
+}
+
+.ditto-btn__label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5em 0.85em;
+  font-family: 'Aeonik Fono', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.9em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Square chip that carries the arrow — matches Ditto's icon box. */
+.ditto-btn__chip {
+  display: inline-grid;
+  place-items: center;
+  align-self: stretch;
+  aspect-ratio: 1 / 1;
+  min-width: 1.9em;
+  border-radius: 0.5em;
+}
+.ditto-btn--primary .ditto-btn__chip {
+  background: var(--ditto-dark);
+  color: var(--ditto-accent);
+}
+.ditto-btn--secondary .ditto-btn__chip {
+  background: var(--ditto-accent);
+  color: var(--ditto-dark);
+}
+
+.ditto-btn__arrow {
+  width: 0.62em; /* preserves the 8:11 glyph ratio at height 0.85em */
+  height: 0.85em;
+  display: block;
+  transition: transform 0.2s ease;
+}
+.ditto-btn:hover .ditto-btn__arrow {
+  transform: translateX(-1.5px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ditto-btn,
+  .ditto-btn__arrow {
+    transition: none;
+  }
+}
