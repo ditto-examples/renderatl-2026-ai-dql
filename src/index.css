@@ -19,6 +19,10 @@ html,
 body,
 #root {
   height: 100%;
+  /* Slides fill the viewport and each SlideShell clips its own content.
+     Clipping here too stops the brief scrollbar flash from the slide-enter
+     transform (y: 28 → 0) during back/forward navigation. */
+  overflow: hidden;
 }
 
 /* Larger base type so slides read from the back of the room. Everything on
