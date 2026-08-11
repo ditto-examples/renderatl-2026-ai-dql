@@ -70,6 +70,18 @@ export default function Problem() {
           </p>
         </motion.div>
 
+        {/* Where the assignment came from — and the theory it came with. */}
+        <motion.p
+          className="mt-5 max-w-3xl border-l-2 py-1 pl-4 text-lg text-text-primary"
+          style={{ borderColor: 'var(--deck-accent)' }}
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Our CEO asked me to look into it — he thought maybe they were{' '}
+          <span className="font-semibold">using our SDK wrong</span>.
+        </motion.p>
+
         <motion.div
           className="mt-9 grid grid-cols-1 gap-4 md:grid-cols-2"
           variants={grid}
