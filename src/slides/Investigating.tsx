@@ -31,8 +31,8 @@ export default function Investigating() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/7')
-      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/9')
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/8')
+      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/10')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)

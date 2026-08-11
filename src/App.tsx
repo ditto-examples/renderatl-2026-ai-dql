@@ -9,6 +9,7 @@ import Problem from './slides/Problem'
 import ExistingTools from './slides/ExistingTools'
 import AiOverview from './slides/AiOverview'
 import BuildingBenchy from './slides/BuildingBenchy'
+import Thermals from './slides/Thermals'
 import Investigating from './slides/Investigating'
 import Instrumentation from './slides/Instrumentation'
 import FlowDiagram from './slides/FlowDiagram'
@@ -54,14 +55,15 @@ export default function App() {
           <Route path="/5" element={<ExistingTools />} />
           <Route path="/6" element={<AiOverview />} />
           <Route path="/7" element={<BuildingBenchy />} />
-          <Route path="/8" element={<Investigating />} />
-          <Route path="/9" element={<Instrumentation />} />
-          <Route path="/10" element={<FlowDiagram />} />
-          <Route path="/11" element={<HowWeFixed />} />
-          <Route path="/12" element={<Payoff />} />
-          <Route path="/13" element={<BroaderWin />} />
-          <Route path="/14" element={<WorkedVsNot />} />
-          <Route path="/15" element={<Takeaways />} />
+          <Route path="/8" element={<Thermals />} />
+          <Route path="/9" element={<Investigating />} />
+          <Route path="/10" element={<Instrumentation />} />
+          <Route path="/11" element={<FlowDiagram />} />
+          <Route path="/12" element={<HowWeFixed />} />
+          <Route path="/13" element={<Payoff />} />
+          <Route path="/14" element={<BroaderWin />} />
+          <Route path="/15" element={<WorkedVsNot />} />
+          <Route path="/16" element={<Takeaways />} />
         </Routes>
       </AnimatePresence>
       {/* Persistent touch-friendly prev/next controls (outside AnimatePresence
