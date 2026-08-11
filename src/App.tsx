@@ -43,8 +43,8 @@ export default function App() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
           <Route path="/2" element={<Intro />} />
-          <Route path="/3" element={<WhatIsDitto />} />
-          <Route path="/4" element={<Problem />} />
+          <Route path="/3" element={<Problem />} />
+          <Route path="/4" element={<WhatIsDitto />} />
           <Route path="/5" element={<ExistingTools />} />
           <Route path="/6" element={<AiOverview />} />
           <Route path="/7" element={<BuildingBenchy />} />

@@ -28,8 +28,8 @@ export default function WhatIsDitto() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/2')
-      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/4')
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/3')
+      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/5')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -49,7 +49,7 @@ export default function WhatIsDitto() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="mb-3 text-sm font-medium tracking-[0.2em] text-text-secondary uppercase">
-            Before we start
+            Backing up a second
           </p>
           <Heading level={1} className="font-kairos text-4xl md:text-6xl">
             What is Ditto?

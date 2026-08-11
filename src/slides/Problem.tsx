@@ -38,8 +38,8 @@ export default function Problem() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/3')
-      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/5')
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/2')
+      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/4')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
