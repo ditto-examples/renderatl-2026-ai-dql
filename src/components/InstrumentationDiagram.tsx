@@ -41,13 +41,15 @@ const SPANS = [
   { label: 'render', indent: 1, start: 200, dur: 40, color: C.violet },
 ]
 
-/* Bottom — the loop. */
+/* Bottom — the loop.
+   SVG text doesn't wrap. At 15px the mono advance is 0.6em, so a card leaves
+   room for ~31 characters a line (~23 for an 18px title). Keep copy under it. */
 const STEPS = [
   {
     n: '1',
     title: 'Ask where to measure',
-    line1: 'hand it the code, get back the',
-    line2: 'boundaries worth timing',
+    line1: 'hand it the code, get back',
+    line2: 'the boundaries worth timing',
   },
   {
     n: '2',
@@ -57,9 +59,9 @@ const STEPS = [
   },
   {
     n: '3',
-    title: 'Run the real thing once',
-    line1: 'the slow screen, the flaky call,',
-    line2: 'the path you want to learn',
+    title: 'Run the real thing',
+    line1: 'a slow screen, a flaky call,',
+    line2: 'a path you want to learn',
   },
   {
     n: '4',

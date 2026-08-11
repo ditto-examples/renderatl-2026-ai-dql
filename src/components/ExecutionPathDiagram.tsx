@@ -34,7 +34,7 @@ const PIPELINE = [
   { title: 'Project', sub: 'materializes every field', hot: true, edge: '10,000 rows' },
   { title: 'Distinct', sub: 'dedupes at the very end', edge: '~5 values' },
   { title: 'Finalize', sub: 'strips internal keys', edge: '' },
-  { title: 'Result', sub: 'serialized back to the app', edge: '' },
+  { title: 'Result', sub: 'serialized to the app', edge: '' },
 ]
 
 /* Stage 3 — what the trace exposed. */

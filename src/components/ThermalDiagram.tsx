@@ -1,21 +1,20 @@
 import type { CSSProperties } from 'react'
-import { motion } from 'motion/react'
 import { BandLabel, Box, C, MONO } from './diagramTheme'
 
 /**
  * Why the benchmark numbers wouldn't hold still: the phone and tablet were
  * thermally throttling under the sustained load of a full benchmark run.
  *
- * Three bands: what one PR test costs the device, the same query traced on a
- * throttling handset vs. an actively cooled board, and what fixed it.
+ * Three bands: what one PR test costs the device, what the numbers did on
+ * each class of hardware, and what fixed it.
  *
- * The two curves are the SHAPE of the effect, not captured measurements —
- * labelled as such in the diagram, and drawn from fixed arrays so the picture
- * is identical every render.
+ * No plotted curves here on purpose — the real run data isn't in this repo,
+ * and a drawn-from-memory chart in a talk about careful measurement is worse
+ * than stating the finding plainly.
  */
 
 const W = 1500
-const H = 720
+const H = 624
 const PAD = 40
 
 /* ── band 1 · the workload behind one PR test ─────────────── */
@@ -31,49 +30,48 @@ const OPS = [
   { x: 1000, label: '=' },
 ]
 
-/* ── band 2 · the two curves ──────────────────────────────── */
-const VMIN = 38
-const VMAX = 96
-const PLOT_W = 570
-const PLOT_H = 200
-const PANEL_Y = 214
-const PANEL_H = 330
-
-// Throttling handset: creeps upward and gets noisier as the SoC heats.
-const THROTTLED = [
-  42, 41, 43, 42, 44, 43, 45, 46, 44, 47, 49, 48, 52, 50, 55, 53, 58, 61, 57, 64,
-  62, 68, 66, 72, 70, 69, 75, 73, 78, 76, 82, 80, 79, 85, 83, 88, 86, 90, 87, 92,
+/* ── band 2 · what the numbers did ────────────────────────── */
+const VERDICTS = [
+  {
+    x: PAD,
+    title: 'Pixel Tablet · Pixel 10',
+    verdict: 'UNSTABLE',
+    color: C.red,
+    lines: [
+      'standard deviation all over the place',
+      'the spread swamped the change under test',
+    ],
+  },
+  {
+    x: 780,
+    title: 'Cooled SoC board · no battery',
+    verdict: 'REPEATABLE',
+    color: C.green,
+    lines: [
+      'deviation tight enough to trust',
+      'a difference meant the code changed',
+    ],
+  },
 ]
-// Actively cooled board: same query, same number.
-const COOLED = [
-  42, 41, 42, 43, 42, 41, 42, 42, 43, 42, 41, 42, 43, 42, 42, 41, 42, 43, 42, 42,
-  43, 41, 42, 42, 43, 42, 42, 41, 42, 43, 42, 42, 41, 42, 42, 43, 42, 41, 42, 42,
-]
 
-const plotX = (panelX: number) => panelX + 70
-const plotTop = () => PANEL_Y + 76
-const yFor = (v: number) =>
-  plotTop() + (1 - (v - VMIN) / (VMAX - VMIN)) * PLOT_H
-const pointsFor = (vals: number[], panelX: number) =>
-  vals
-    .map((v, i) => `${plotX(panelX) + (i * PLOT_W) / (vals.length - 1)},${yFor(v)}`)
-    .join(' ')
-
-/* ── band 3 · what fixed it ───────────────────────────────── */
+/* ── band 3 · what fixed it ───────────────────────────────────
+   SVG text doesn't wrap, so each line is pre-broken to fit the card:
+   at 15px the mono advance is 0.6em, so FIX_W minus padding leaves room
+   for ~41 characters. Keep new copy under that. */
 const FIXES = [
   {
     title: 'AI found the pattern',
-    line: 'the slowdown tracked elapsed time, not the code under test',
+    lines: ['the slowdown tracked elapsed time,', 'not the code under test'],
     color: C.cyan,
   },
   {
     title: 'Swap the hardware',
-    line: 'an SoC board with a desktop cooler, no battery, its own case',
+    lines: ['an SoC board with a desktop cooler,', 'no battery, its own case'],
     color: C.green,
   },
   {
     title: 'A week from Amazon',
-    line: 'after that, an unstable query was ours — not the room’s',
+    lines: ['after that, an unstable query', 'was ours — not the room’s'],
     color: C.green,
   },
 ]
@@ -90,8 +88,8 @@ export function ThermalDiagram({ className, style }: Props) {
     <svg
       viewBox={`0 0 ${W} ${H}`}
       role="img"
-      aria-label="Thermal throttling on the benchmark hardware. One pull-request test runs 45 queries at 60 iterations each across 3 runs — 8,100 query executions plus 135 profiles. On a phone or tablet the same query gets steadily slower and noisier as the device heats; on an actively cooled board with no battery it returns the same number every time. AI found that the slowdown tracked elapsed time rather than the code under test, and swapping to cooled hardware made unstable queries attributable to the code."
-      className={`block w-full min-w-[46rem] rounded-2xl md:h-[58vh] md:w-auto md:max-w-full md:min-w-0 ${className ?? ''}`}
+      aria-label="Thermal throttling on the benchmark hardware. One pull-request test runs 45 queries at 60 iterations each across 3 runs — 8,100 query executions plus 135 profiles. On the Pixel Tablet and Pixel 10 the results were unstable, with standard deviation all over the place and the spread swamping the change under test; on an actively cooled board with no battery the deviation was tight enough that a difference meant the code had changed. AI found that the slowdown tracked elapsed time rather than the code under test, and swapping to cooled hardware made unstable queries attributable to the code."
+      className={`block w-full min-w-[46rem] rounded-2xl md:h-[45vh] md:w-auto md:max-w-full md:min-w-0 ${className ?? ''}`}
       style={{
         background: C.panel,
         border: '1px solid rgba(var(--deck-surface-rgb),0.12)',
@@ -129,132 +127,49 @@ export function ThermalDiagram({ className, style }: Props) {
         </g>
       ))}
       {OPS.map((o) => (
-        <text
-          key={o.x}
-          x={o.x + 20}
-          y={90}
-          textAnchor="middle"
-          fontSize={22}
-          fill={C.dim}
-        >
+        <text key={o.x} x={o.x + 20} y={90} textAnchor="middle" fontSize={22} fill={C.dim}>
           {o.label}
         </text>
       ))}
 
-      {/* ── 2 · the same query, over and over ──────────────── */}
-      <BandLabel x={PAD} y={196}>
-        2 · the same query, run over and over
+      {/* ── 2 · what the numbers did ───────────────────────── */}
+      <BandLabel x={PAD} y={176}>
+        2 · what the numbers did
       </BandLabel>
-
-      <Chart
-        panelX={PAD}
-        title="Pixel Tablet · Pixel 10"
-        sub="throttles under sustained load"
-        color={C.red}
-        values={THROTTLED}
-        note="≈2× slower by the end of a run"
-      />
-      <Chart
-        panelX={780}
-        title="Cooled SoC board · no battery"
-        sub="same query, same number"
-        color={C.green}
-        values={COOLED}
-        note="flat for the whole run"
-      />
-
-      <text x={W - PAD} y={566} textAnchor="end" fontSize={13} fill={C.dim}>
-        shape of the effect — illustrative, not captured measurements
-      </text>
+      {VERDICTS.map((v) => (
+        <g key={v.title}>
+          <Box x={v.x} y={192} w={680} h={230} color={v.color} hot />
+          <text x={v.x + 32} y={228} fontSize={19} fontWeight="bold" fill={C.text}>
+            {v.title}
+          </text>
+          <text x={v.x + 32} y={302} fontSize={42} fontWeight="bold" fill={v.color}>
+            {v.verdict}
+          </text>
+          {v.lines.map((l, li) => (
+            <text key={l} x={v.x + 32} y={352 + li * 28} fontSize={16} fill={C.muted}>
+              {l}
+            </text>
+          ))}
+        </g>
+      ))}
 
       {/* ── 3 · what fixed it ──────────────────────────────── */}
-      <BandLabel x={PAD} y={600}>
+      <BandLabel x={PAD} y={470}>
         3 · what fixed it
       </BandLabel>
       {FIXES.map((f, i) => (
         <g key={f.title}>
-          <Box x={fixX(i)} y={614} w={FIX_W} h={82} color={f.color} />
-          <text x={fixX(i) + 20} y={646} fontSize={18} fontWeight="bold" fill={f.color}>
+          <Box x={fixX(i)} y={484} w={FIX_W} h={110} color={f.color} />
+          <text x={fixX(i) + 24} y={518} fontSize={18} fontWeight="bold" fill={f.color}>
             {f.title}
           </text>
-          <text x={fixX(i) + 20} y={674} fontSize={15} fill={C.muted}>
-            {f.line}
-          </text>
+          {f.lines.map((l, li) => (
+            <text key={l} x={fixX(i) + 24} y={548 + li * 24} fontSize={15} fill={C.muted}>
+              {l}
+            </text>
+          ))}
         </g>
       ))}
     </svg>
-  )
-}
-
-function Chart({
-  panelX,
-  title,
-  sub,
-  color,
-  values,
-  note,
-}: {
-  panelX: number
-  title: string
-  sub: string
-  color: string
-  values: number[]
-  note: string
-}) {
-  const x0 = plotX(panelX)
-  const top = plotTop()
-  const bottom = top + PLOT_H
-  const baseline = yFor(values[0])
-
-  return (
-    <g>
-      <Box x={panelX} y={PANEL_Y} w={680} h={PANEL_H} color={color} />
-      <text x={panelX + 24} y={PANEL_Y + 34} fontSize={19} fontWeight="bold" fill={color}>
-        {title}
-      </text>
-      <text x={panelX + 24} y={PANEL_Y + 58} fontSize={15} fill={C.muted}>
-        {sub}
-      </text>
-
-      {/* axes */}
-      <line x1={x0} y1={top} x2={x0} y2={bottom} stroke="rgba(255,255,255,0.12)" />
-      <line x1={x0} y1={bottom} x2={x0 + PLOT_W} y2={bottom} stroke="rgba(255,255,255,0.12)" />
-      {/* where the run started, for comparison across both charts */}
-      <line
-        x1={x0}
-        y1={baseline}
-        x2={x0 + PLOT_W}
-        y2={baseline}
-        stroke="rgba(255,255,255,0.18)"
-        strokeDasharray="5 6"
-      />
-
-      <text
-        transform={`translate(${panelX + 34}, ${top + PLOT_H / 2}) rotate(-90)`}
-        textAnchor="middle"
-        fontSize={13}
-        fill={C.dim}
-      >
-        query time
-      </text>
-      <text x={x0 + PLOT_W} y={bottom + 26} textAnchor="end" fontSize={13} fill={C.dim}>
-        iterations →
-      </text>
-
-      <motion.polyline
-        points={pointsFor(values, panelX)}
-        fill="none"
-        stroke={color}
-        strokeWidth={2.5}
-        strokeLinejoin="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ delay: 0.4, duration: 1.1, ease: 'easeOut' }}
-      />
-
-      <text x={x0 + PLOT_W} y={top - 8} textAnchor="end" fontSize={15} fill={color}>
-        {note}
-      </text>
-    </g>
   )
 }
