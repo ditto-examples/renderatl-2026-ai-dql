@@ -35,8 +35,8 @@ export default function WorkedVsNot() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/12')
-      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/14')
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/13')
+      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/15')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)

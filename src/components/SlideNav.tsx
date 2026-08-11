@@ -2,7 +2,10 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 /**
  * Linear slide order — matches the <Route> table in App and the per-slide
- * arrow-key handlers. Home is "/", then /2../14 in sequence.
+ * arrow-key handlers. Home is "/", then /2../15 in sequence.
+ *
+ * NB: inserting a slide means renumbering here, in App's <Route> table, and in
+ * the arrow-key handler of every slide from the insertion point on.
  */
 const ORDER = [
   '/',
@@ -19,6 +22,7 @@ const ORDER = [
   '/12',
   '/13',
   '/14',
+  '/15',
 ]
 
 /**

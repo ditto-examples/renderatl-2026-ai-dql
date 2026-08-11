@@ -29,8 +29,8 @@ export default function HowWeFixed() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/9')
-      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/11')
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/10')
+      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/12')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)

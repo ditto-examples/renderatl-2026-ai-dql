@@ -12,8 +12,8 @@ export default function BroaderWin() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/11')
-      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/13')
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/12')
+      if (e.key === 'ArrowRight' || e.key === 'Enter') navigate('/14')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)

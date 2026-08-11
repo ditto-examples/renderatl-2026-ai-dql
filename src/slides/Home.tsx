@@ -107,7 +107,7 @@ export default function Home() {
             <DittoButton onClick={() => navigate(START_PATH)}>
               Start the talk
             </DittoButton>
-            <Button variant="ghost" size="lg" onClick={() => navigate('/13')}>
+            <Button variant="ghost" size="lg" onClick={() => navigate('/14')}>
               Skip to results
             </Button>
           </div>

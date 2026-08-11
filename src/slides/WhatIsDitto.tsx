@@ -3,46 +3,24 @@ import { useNavigate } from 'react-router-dom'
 import { motion, type Variants } from 'motion/react'
 import { Heading } from '@dittolive/anvil'
 import { SlideShell } from '../components/SlideShell'
+import blueprint from '../assets/ditto-blueprint.jpg'
 
 const ACCENT = 'var(--deck-accent)'
 
+/* Four talking points, one line each — the diagram carries the explanation. */
 const PILLARS = [
-  {
-    icon: DatabaseIcon,
-    title: 'Edge-native database',
-    body: 'Data lives on the device. Every app reads and writes locally first — no round-trip to a server.',
-  },
-  {
-    icon: MeshIcon,
-    title: 'Sync without a server',
-    body: 'Devices form a peer-to-peer mesh and replicate directly to each other — online or off.',
-  },
-  {
-    icon: ShieldIcon,
-    title: 'Offline-first, conflict-free',
-    body: 'Built on CRDTs, so concurrent edits from any device merge automatically — no lost writes.',
-  },
-  {
-    icon: CodeIcon,
-    title: 'Query with DQL',
-    body: 'A flexible JSON document model, queried with DQL — an expressive, SQL-like language.',
-  },
-]
-
-// Transport palette lifted from Ditto's presence viewer (ConnectionLine).
-const TRANSPORTS = [
-  { label: 'Bluetooth LE', color: '#007AFF' },
-  { label: 'P2P Wi-Fi', color: '#C71939' },
-  { label: 'LAN', color: '#34C759' },
-  { label: 'Cloud', color: '#AF52DE' },
+  { icon: DatabaseIcon, title: 'Edge-native database', note: 'reads and writes stay local' },
+  { icon: MeshIcon, title: 'Peer-to-peer mesh', note: 'syncs with no server' },
+  { icon: ShieldIcon, title: 'CRDTs', note: 'concurrent edits just merge' },
+  { icon: CodeIcon, title: 'DQL', note: 'SQL-like, over JSON' },
 ]
 
 const grid: Variants = {
-  animate: { transition: { staggerChildren: 0.1, delayChildren: 0.25 } },
+  animate: { transition: { staggerChildren: 0.08, delayChildren: 0.5 } },
 }
 const card: Variants = {
-  initial: { opacity: 0, y: 18 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
 }
 
 export default function WhatIsDitto() {
@@ -64,29 +42,58 @@ export default function WhatIsDitto() {
           'radial-gradient(120% 120% at 85% 10%, var(--deck-bg-from) 0%, var(--deck-bg-to) 100%)',
       }}
     >
-      <div className="relative z-10 mx-auto flex min-h-dvh max-w-5xl flex-col justify-center px-6 py-16">
+      <div className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-6 pt-8 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="mb-4 text-sm font-medium tracking-[0.2em] text-text-secondary uppercase">
+          <p className="mb-3 text-sm font-medium tracking-[0.2em] text-text-secondary uppercase">
             Before we start
           </p>
           <Heading level={1} className="font-kairos text-4xl md:text-6xl">
             What is Ditto?
           </Heading>
-          <p className="mt-5 max-w-3xl text-lg text-text-secondary md:text-xl">
-            A mobile database with edge connectivity and CRDTs built in. It's the
-            only one to pair{' '}
-            <span className="text-text-primary">peer-to-peer edge connectivity
-            with CRDTs</span>. Your data stays available, consistent, and in
-            sync across every device — with or without the cloud.
+          <p className="mt-3 max-w-3xl text-lg text-text-secondary md:text-xl">
+            A database that lives on the device and syncs device-to-device —{' '}
+            <span className="text-text-primary">with or without the cloud.</span>
           </p>
         </motion.div>
 
+        {/* Hero: the architecture diagram from the Ditto docs. It ships on a
+            near-black canvas, so it sits in a deliberate dark frame that reads
+            the same in light and dark themes. */}
+        <motion.figure
+          className="m-0 mt-6"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div
+            className="overflow-hidden rounded-2xl"
+            style={{
+              background: '#0a0a0a',
+              border: '1px solid rgba(var(--deck-surface-rgb),0.12)',
+            }}
+          >
+            <img
+              src={blueprint}
+              alt="Ditto architecture: devices running the Ditto Edge SDK sync peer-to-peer over Bluetooth LE, P2P Wi-Fi and LAN, and replicate to Ditto Server in the cloud or on-premise, which connects to existing systems via Kafka, webhooks and SQL."
+              className="mx-auto block w-full"
+              style={{ maxHeight: '52vh', objectFit: 'contain' }}
+            />
+          </div>
+          <figcaption className="mt-3 text-sm text-text-tertiary md:text-base">
+            <span className="font-semibold" style={{ color: ACCENT }}>
+              The Rainbow Connection:
+            </span>{' '}
+            each color is a different transport — the mesh hops between them on
+            the fly, always taking whichever is fastest.
+          </figcaption>
+        </motion.figure>
+
         <motion.div
-          className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2"
+          className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4"
           variants={grid}
           initial="initial"
           animate="animate"
@@ -97,61 +104,29 @@ export default function WhatIsDitto() {
               <motion.div
                 key={p.title}
                 variants={card}
-                className="flex gap-4 rounded-xl p-5"
+                className="flex items-center gap-3 rounded-xl px-4 py-3"
                 style={{
                   background: 'rgba(var(--deck-surface-rgb),0.04)',
                   border: '1px solid rgba(var(--deck-surface-rgb),0.08)',
                 }}
               >
                 <span
-                  className="flex h-10 w-10 flex-none items-center justify-center rounded-lg"
+                  className="flex h-9 w-9 flex-none items-center justify-center rounded-lg"
                   style={{ background: `rgba(var(--deck-accent-rgb),0.1)`, color: ACCENT }}
                 >
                   <Icon />
                 </span>
-                <div>
-                  <h3 className="text-lg font-semibold text-text-primary">
+                <div className="min-w-0">
+                  <h3 className="text-base leading-tight font-semibold text-text-primary">
                     {p.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-                    {p.body}
+                  <p className="text-sm leading-tight text-text-secondary">
+                    {p.note}
                   </p>
                 </div>
               </motion.div>
             )
           })}
-        </motion.div>
-
-        {/* The Rainbow Connection — how the mesh switches transports */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.6 }}
-          className="mt-8 rounded-xl p-5"
-          style={{
-            background: 'rgba(var(--deck-surface-rgb),0.03)',
-            border: '1px solid rgba(var(--deck-surface-rgb),0.08)',
-          }}
-        >
-          <p className="text-sm leading-relaxed text-text-secondary">
-            <span className="font-semibold" style={{ color: ACCENT }}>
-              The Rainbow Connection:
-            </span>{' '}
-            a transport multiplexer switches between these connections on the fly
-            — each color a different transport — always using whichever is
-            fastest and falling back the moment one drops.
-          </p>
-          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
-            {TRANSPORTS.map((t) => (
-              <span key={t.label} className="flex items-center gap-2">
-                <span
-                  className="block h-2.5 w-2.5 rounded-full"
-                  style={{ background: t.color, boxShadow: `0 0 10px 0 ${t.color}80` }}
-                />
-                <span className="text-sm text-text-secondary">{t.label}</span>
-              </span>
-            ))}
-          </div>
         </motion.div>
       </div>
     </SlideShell>

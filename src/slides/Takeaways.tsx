@@ -34,7 +34,7 @@ export default function Takeaways() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/13')
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') navigate('/14')
       if (e.key === 'Home') navigate('/')
     }
     window.addEventListener('keydown', onKey)
