@@ -57,11 +57,14 @@ html {
   font-size: 112.5%;
 }
 
-/* On a phone that projector-sized base type is what pushes every slide well
-   past the viewport. Back to normal — the deck is being read, not projected. */
+/* Phones also get the smaller (non-md:) type scale on every slide, so cutting
+   the base size on top of that left the deck hard to read on a handset. It's
+   larger than the projector size instead — the page scrolls, so the extra
+   height costs nothing. This one number scales all phone type; ~106%–131% is
+   the sane range. */
 @media (max-width: 767px) {
   html {
-    font-size: 100%;
+    font-size: 125%; /* 20px */
   }
 }
 
