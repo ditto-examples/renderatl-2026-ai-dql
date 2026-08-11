@@ -19,10 +19,35 @@ html,
 body,
 #root {
   height: 100%;
-  /* Slides fill the viewport and each SlideShell clips its own content.
-     Clipping here too stops the brief scrollbar flash from the slide-enter
-     transform (y: 28 → 0) during back/forward navigation. */
-  overflow: hidden;
+}
+
+/* Presentation mode (tablet and up): slides fill the viewport and each
+   SlideShell clips its own content. Clipping here too stops the brief
+   scrollbar flash from the slide-enter transform (y: 28 → 0) during
+   back/forward navigation. */
+@media (min-width: 768px) {
+  html,
+  body,
+  #root {
+    overflow: hidden;
+  }
+}
+
+/* Phones: a slide laid out for a projector is taller than a phone screen, so
+   the page has to scroll or the bottom of every slide is unreachable. Only
+   the horizontal axis stays clipped, so the enter/exit transforms can't
+   rubber-band sideways. */
+@media (max-width: 767px) {
+  html,
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+  #root {
+    height: auto;
+    min-height: 100%;
+  }
 }
 
 /* Larger base type so slides read from the back of the room. Everything on
@@ -30,6 +55,14 @@ body,
    Dial between ~106% and ~120% to taste. */
 html {
   font-size: 112.5%;
+}
+
+/* On a phone that projector-sized base type is what pushes every slide well
+   past the viewport. Back to normal — the deck is being read, not projected. */
+@media (max-width: 767px) {
+  html {
+    font-size: 100%;
+  }
 }
 
 body {

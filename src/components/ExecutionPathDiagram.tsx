@@ -92,13 +92,12 @@ export function ExecutionPathDiagram({ className, style }: Props) {
       viewBox={`0 0 ${W} ${H}`}
       role="img"
       aria-label="Generic query execution path: the query crosses the SDK boundary into the engine, the planner falls back to a full collection scan for want of an index, and an async operator pipeline scans and projects all ten thousand documents to return about five distinct values. Most of the time goes to parsing and materializing documents."
-      className={`block rounded-2xl ${className ?? ''}`}
+      // Presentation mode is height-driven: slides are viewport-height
+      // constrained, and sizing by width instead would letterbox the diagram
+      // inside its own frame. On phones that flips — the diagram holds a
+      // legible minimum width and its wrapper pans it horizontally.
+      className={`block w-full min-w-[46rem] rounded-2xl md:h-[58vh] md:w-auto md:max-w-full md:min-w-0 ${className ?? ''}`}
       style={{
-        // Height-driven: slides are viewport-height constrained, and sizing an
-        // inline SVG by width instead would letterbox inside its own frame.
-        height: '58vh',
-        width: 'auto',
-        maxWidth: '100%',
         background: C.panel,
         border: '1px solid rgba(var(--deck-surface-rgb),0.12)',
         fontFamily: MONO,

@@ -70,18 +70,23 @@ export default function WhatIsDitto() {
           transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <div
-            className="overflow-hidden rounded-2xl"
-            style={{
-              background: '#0a0a0a',
-              border: '1px solid rgba(var(--deck-surface-rgb),0.12)',
-            }}
+            data-swipe-ignore
+            className="-mx-6 overflow-x-auto px-6 md:mx-0 md:overflow-visible md:px-0"
           >
-            <img
-              src={blueprint}
-              alt="Ditto architecture: devices running the Ditto Edge SDK sync peer-to-peer over Bluetooth LE, P2P Wi-Fi and LAN, and replicate to Ditto Server in the cloud or on-premise, which connects to existing systems via Kafka, webhooks and SQL."
-              className="mx-auto block w-full"
-              style={{ maxHeight: '52vh', objectFit: 'contain' }}
-            />
+            <div
+              className="min-w-[46rem] overflow-hidden rounded-2xl md:min-w-0"
+              style={{
+                background: '#0a0a0a',
+                border: '1px solid rgba(var(--deck-surface-rgb),0.12)',
+              }}
+            >
+              <img
+                src={blueprint}
+                alt="Ditto architecture: devices running the Ditto Edge SDK sync peer-to-peer over Bluetooth LE, P2P Wi-Fi and LAN, and replicate to Ditto Server in the cloud or on-premise, which connects to existing systems via Kafka, webhooks and SQL."
+                className="mx-auto block w-full"
+                style={{ maxHeight: '52vh', objectFit: 'contain' }}
+              />
+            </div>
           </div>
           <figcaption className="mt-3 text-sm text-text-tertiary md:text-base">
             <span className="font-semibold" style={{ color: ACCENT }}>

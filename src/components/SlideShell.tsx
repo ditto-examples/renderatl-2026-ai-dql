@@ -40,7 +40,9 @@ export function SlideShell({ children, className, style }: SlideShellProps) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className={`bg-background relative min-h-dvh w-full overflow-hidden ${className ?? ''}`}
+      // Clipped in presentation mode; on phones content is allowed to run past
+      // the viewport so the page can scroll it into reach.
+      className={`bg-background relative min-h-dvh w-full overflow-visible md:overflow-hidden ${className ?? ''}`}
       style={style}
     >
       {children}

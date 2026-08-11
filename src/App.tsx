@@ -35,6 +35,12 @@ export default function App() {
     if (!stored) setTheme('dark')
   }, [setTheme])
 
+  // Phones scroll (see index.css), so a slide entered while the previous one
+  // was scrolled down would start part-way in. Every slide starts at the top.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
   // Cross-dissolve between slides: the outgoing slide finishes its exit
   // (SlideShell) before the incoming one enters (mode="wait").
   return (

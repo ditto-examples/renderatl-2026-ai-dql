@@ -89,11 +89,10 @@ export function InstrumentationDiagram({ className, style }: Props) {
       viewBox={`0 0 ${W} ${H}`}
       role="img"
       aria-label="Instrumentation explained: mark a start time, run the work, record the elapsed time — placed at entry points, boundaries, loops and suspect functions. What you get back is a waterfall where bar width is time spent and indentation is the call stack, showing a database query taking most of a request. Below, the four-step loop for doing it with AI: ask where to measure, add the probes, run the real scenario once, then hand the trace back for a map."
-      className={`block rounded-2xl ${className ?? ''}`}
+      // Height-driven in presentation mode; on phones it keeps a legible
+      // minimum width and pans inside its wrapper. See ExecutionPathDiagram.
+      className={`block w-full min-w-[46rem] rounded-2xl md:h-[56vh] md:w-auto md:max-w-full md:min-w-0 ${className ?? ''}`}
       style={{
-        height: '56vh',
-        width: 'auto',
-        maxWidth: '100%',
         background: C.panel,
         border: '1px solid rgba(var(--deck-surface-rgb),0.12)',
         fontFamily: MONO,

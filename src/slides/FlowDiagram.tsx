@@ -51,7 +51,12 @@ export default function FlowDiagram() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="flex justify-center">
+          {/* Pans horizontally on phones (block, so the left edge stays
+              reachable); centered in presentation mode. */}
+          <div
+            data-swipe-ignore
+            className="-mx-6 overflow-x-auto px-6 md:mx-0 md:flex md:justify-center md:overflow-visible md:px-0"
+          >
             <ExecutionPathDiagram />
           </div>
           <figcaption className="mt-3 text-sm text-text-tertiary">

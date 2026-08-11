@@ -49,7 +49,10 @@ export default function Instrumentation() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="flex justify-center">
+          <div
+            data-swipe-ignore
+            className="-mx-6 overflow-x-auto px-6 md:mx-0 md:flex md:justify-center md:overflow-visible md:px-0"
+          >
             <InstrumentationDiagram />
           </div>
         </motion.figure>
