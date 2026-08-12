@@ -122,7 +122,9 @@ export function SlideNav() {
         </button>
       )}
 
-      {/* phones — a compact pill, clear of the content, above the home bar */}
+      {/* phones — a compact pill, clear of the content, above the home bar.
+          Just the two arrows: a slide counter wedged between them read as
+          clutter, and the presenter already knows where they are. */}
       <div
         className="fixed left-3 z-30 flex items-center gap-1 rounded-full p-1 backdrop-blur-sm md:hidden"
         style={{
@@ -139,12 +141,6 @@ export function SlideNav() {
         >
           <Chevron dir="left" />
         </button>
-        <span
-          className="px-1 text-xs tabular-nums"
-          style={{ color: 'rgba(var(--deck-surface-rgb),0.55)' }}
-        >
-          {i + 1}/{ORDER.length}
-        </span>
         <button
           type="button"
           aria-label="Next slide"
