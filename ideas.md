@@ -13,11 +13,47 @@ large dataset, from 2,253 ms down to 1.84 ms. I knew the ceiling was high. I was
 genuinely, pleasantly surprised by how high. This session is the story of how we
 got there, and how those numbers changed the way we ship.
 
-**Constraints:** 20 minutes, now across **15 content screens + Home**. That's
-closer to ~75 s/slide than the 1–2 min this outline was first planned around, so
-several slides are deliberately one visual plus one spoken beat. If it runs long,
-the cut candidates are `/10` (Instrument anything) and `/8` (Thermals) — both are
-transferable-skill slides rather than story beats.
+**Constraints:** 20 minutes across **15 content screens + Home**. A flat average
+per slide is the wrong way to plan this — dry runs showed the spread is huge.
+Home and Who-am-I land in **under 30 seconds each**, while the diagram slides
+carry 1.5–2 minutes on their own. Slide _count_ matters much less than slide
+_weight_, and the fast slides are what funded adding `/8` and `/10` — they were
+inserted partly for pacing, because the deck was finishing early.
+
+Budget below sums to **~18 min**, leaving ~2 min of slack. Correct these against
+your next dry run; the only measured figure so far is that the opening slides run
+short.
+
+| Route | Slide             | Budget | Notes                             |
+| ----- | ----------------- | -----: | --------------------------------- |
+| `/`   | Home              |    20s | title, then go                    |
+| `/2`  | Who am I          |    25s | measured short — don't pad it     |
+| `/3`  | The Problem       |    90s | hook + CEO ask + constraints      |
+| `/4`  | What is Ditto     |    55s | "keep under a minute"             |
+| `/5`  | Existing tools    |    45s | one credibility beat              |
+| `/6`  | What I did w/ AI  |    40s | spine preview only                |
+| `/7`  | Building Benchy   |   100s | skills + the suite                |
+| `/8`  | Thermals          |    90s | the arithmetic, then the verdicts |
+| `/9`  | Investigating     |    75s | instrument vs profile             |
+| `/10` | Instrument anythg |    90s | the teaching slide                |
+| `/11` | AI drew the map   |   100s | thesis beat — don't rush          |
+| `/12` | How we fixed it   |    90s | war room + per-PR gating          |
+| `/13` | Payoff            |    45s | let the count-down land           |
+| `/14` | Whole board moved |    45s | one chart, one sentence           |
+| `/15` | Worked vs didn't  |   110s | both lists, the honest part        |
+| `/16` | Takeaways         |    75s | 3 points + closer                 |
+
+**If a dry run still finishes early**, the cheapest additions in rough order:
+
+1. **Mesh Lab as its own slide** — `mesh-lab.jpg` is currently a supporting image
+   on `/5`; 50 devices (soon 100) is a strong visual that can hold its own beat.
+2. **Memory, briefly** — currently parked as "memory's another talk". A single
+   slide saying what memory did and why we deferred it is honest and buys ~45s.
+3. **The unused portal captures** — `benchy-metrics.png` and
+   `benchy-profiling.png` (the un-zoomed versions) are in `src/assets` and
+   referenced nowhere; either is a Benchy Portal walkthrough beat.
+4. **A live-ish demo or Q&A buffer** — better than stretching a slide that's
+   already said its piece.
 
 **The through-line (say it, prove it twice):** AI is powerful when it's grounded
 in real, measured data and driven by someone with domain context — and it fails
