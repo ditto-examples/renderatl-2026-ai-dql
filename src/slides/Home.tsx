@@ -110,6 +110,13 @@ export default function Home() {
             <Button variant="ghost" size="lg" onClick={() => navigate('/15')}>
               Skip to results
             </Button>
+            {/* asChild renders a real anchor with the ghost-button styling, so
+                it's middle-clickable and matches the button beside it. */}
+            <Button asChild variant="ghost" size="lg">
+              <a href="https://ditto.com" target="_blank" rel="noopener noreferrer">
+                ditto.com
+              </a>
+            </Button>
           </div>
         </main>
       </div>
