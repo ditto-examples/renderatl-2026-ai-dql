@@ -13,72 +13,89 @@ large dataset, from 2,253 ms down to 1.84 ms. I knew the ceiling was high. I was
 genuinely, pleasantly surprised by how high. This session is the story of how we
 got there, and how those numbers changed the way we ship.
 
-**Constraints:** 20 minutes. ~1–2 min/slide → ~12 slides. Be concise.
+**Constraints:** 20 minutes, now across **15 content screens + Home**. That's
+closer to ~75 s/slide than the 1–2 min this outline was first planned around, so
+several slides are deliberately one visual plus one spoken beat. If it runs long,
+the cut candidates are `/10` (Instrument anything) and `/8` (Thermals) — both are
+transferable-skill slides rather than story beats.
 
 **The through-line (say it, prove it twice):** AI is powerful when it's grounded
 in real, measured data and driven by someone with domain context — and it fails
-when it isn't. Proven by the skepticism story (slide 9) and the "what didn't
-work" list (slide 11).
+when it isn't. Proven by the skepticism story (`/11`) and the "what didn't work"
+list (`/15`).
+
+## Design direction (Aug 2026 review)
+
+Review feedback was that the deck read **word-heavy vs. imagery and diagrams
+people can intuit while I talk**. The rules that came out of it:
+
+- Every slide leads with one visual; prose is cut to a lede plus a single line.
+- **Problem before primer** — the benchmark problem now lands _before_ "What is
+  Ditto", so the hook comes first and the context arrives once the room wants it.
+- Diagrams are built in-deck as SVG: sharp on a projector, scalable to any room,
+  and nothing internal can leak. They keep their own dark panel in light and dark
+  theme so they read as artifacts rather than page furniture.
+- **Nothing invented as if measured.** Where the real data isn't at hand, state
+  the finding in words instead of drawing a plausible-looking chart.
 
 ## About Ditto (reference)
 
 Edge-based database that syncs via a mesh network; SQL-like query language (DQL).
+
 - https://docs.ditto.live/home/about-ditto
 - https://docs.ditto.live/key-concepts/mesh-networking
 - https://docs.ditto.live/dql/dql
 
 ---
 
-# The 12-slide flow
+# The flow (route → slide)
 
-## Slide 1 — Home / Title  ✅ built
+All 16 screens are built. Route numbers are the source of truth — they match
+App's `<Route>` table and `SlideNav`'s `ORDER`.
 
-- Name of the talk + brief description. "Start the talk" → cold open.
+## `/` — Home / Title ✅
+
+- Talk name + "From 2,253 ms to 1.84 ms". "Start the talk" → `/2`.
 - Background: drifting-squares animation ported from the presence viewer
   (VS Code plugin at /Users/labeaaa/Developer/ditto-vsc-es).
+- **The cold-open Slack message slide was cut.** The CEO beat it carried now
+  lives on the Problem slide, which is a stronger home for it.
 
-## Slide 2 — Cold open (the Slack message)  ✅ built
-
-- Adam (CEO) DMs me: a prospect benchmarked us on Android; query performance and
-  memory look bad; figure out if the numbers are even right, and if so, fix it.
-  It was a Thursday.
-- Frame the talk: how I investigated, what I found, how I fixed it — and how I
-  used AI at every step.
-
-## Slide 3 — Who am I  ✅ built
+## `/2` — Who am I ✅
 
 - Developer Advocate at Ditto; software engineer for 30 years.
 - Couchbase (Principal Engineer & Developer Advocate); EY (Assistant Director /
   Technical Lead — Developer Experience/Gaia Platform, and Mobile Technologies).
 - Shipped through every era: dot-com, Y2K, Web 2.0, mobile, cloud — now AI.
 
-## Slide 4 — What is Ditto  ✅ built
+## `/3` — The Problem: "Two benchmarks. Both bad." ✅
 
-- Mobile database with edge connectivity and CRDTs built in; the only one to pair
-  peer-to-peer edge connectivity with CRDTs.
-- Four pillars + the Rainbow Connection (transport multiplexer) callout.
+- **Moved ahead of the Ditto primer** — this is the hook.
+- A prospect benchmarked Ditto on Android: **query performance** and **memory
+  usage** (inject a document every 250 ms, observe it on another device).
+- **The CEO asked me to look into it — he thought maybe they were using our SDK
+  wrong.** On-slide, marked with an accent rule. That theory is the hypothesis
+  the rest of the talk tests.
+- Constraints: we got the test _rules_, not the dataset; I had the weekend and an
+  answer was due Monday; the plan was query first, memory later.
+- Closer: "First problem: I had no way to even **measure** this."
+- Spoken color: planned it Thursday afternoon with my boss Skyler; needed data
+  shaped similarly (MongoDB **MFlix** sample set) and his **45 queries** against
+  it; needed to build the SDK from source, target any SDK version, and compare
+  against other engines.
+
+## `/4` — What is Ditto ✅
+
+- **Hero is the architecture diagram from our own docs** (`bp.jpg`, vendored to
+  `src/assets/ditto-blueprint.jpg` so the talk doesn't depend on the CDN).
+- Prose cut to one line; the four pillars are short labels only — edge-native
+  database · peer-to-peer mesh · CRDTs · DQL.
+- The Rainbow Connection is now a one-line caption: the docs image carries its
+  own transport legend, so the old colored-dot list was redundant.
+- Kicker is "Backing up a second" — it's no longer the first content slide.
 - Keep under a minute.
 
-## Slide 5 — The Problem
-
-- The prospect benchmarked two things:
-  - **Query performance.**
-  - **Memory usage** — inject a document every 250 ms and observe it on another
-    device via our observer API.
-  - Report: query performance significantly slower than expected; memory spiking.
-- Thursday afternoon, planned with my boss Skyler. The report only gave us the
-  *rules* they tested — not the dataset.
-- Decision: **tackle query performance first**, deal with memory once we had a
-  grip on queries.
-- What I needed to get started:
-  - Data shaped similarly (not the exact data). Skyler had used the MongoDB
-    **MFlix** sample dataset for a small JS benchmark tool.
-  - His **45 queries** against MFlix — reuse them on Android.
-  - Ability to: build the SDK from source on the fly; build against any Ditto SDK
-    version (features differ, e.g. indexing); test against other engines (SQLite);
-    run query-engine profiling and capture results.
-
-## Slide 6 — "Don't we already have tools?"
+## `/5` — "Don't we already have tools?" ✅
 
 - Yes — **Ditto Test Protocol (DTP)**: complex tooling that tests the SDK in the
   **Mesh Lab** (50 devices, soon 100).
@@ -87,40 +104,51 @@ Edge-based database that syncs via a mesh network; SQL-like query language (DQL)
 - So I was going to have to build something.
 - (Credibility beat: we have serious tooling — just not for this.)
 
-## Slide 7 — What I did with AI (the spine)
+## `/6` — What I did with AI (the spine) ✅
 
 - Two buckets, previewed up front so the payoff is clear:
   - **Build** — AI as a force multiplier for infrastructure.
   - **Investigate** — AI as an analysis partner, grounded in real data.
+- "Two very different jobs. AI was far better at one than the other."
 
-## Slide 8 — Building the harness with AI
+## `/7` — Building Benchy ✅
 
-- **Name it clearly up front:** I call the whole suite **Benchy** — after the
-  little boat 3D printers print to benchmark themselves. (I'll say "Benchy" a lot;
-  it's the umbrella name for everything I built.) The name is already introduced
-  on Slide 7's Build panel.
-- **The real unlock (lead with this):** I wrote custom **Skill files** that
-  taught the AI not just how to do a task, but how to write **Python scripts to
-  automate** that task — so the work became repeatable, not one-off. This is why
-  AI acted as a force multiplier.
-- Used AI + agent skills to build **custom Ditto SDK versions on the fly** for
-  specific processor types to run in my lab.
-- Built a suite of scripts + apps that could:
-  - dynamically switch Ditto SDK versions (or test other platforms)
-  - a library of benchmarks (data + queries) across industry sample datasets
-  - test query performance
-  - instrument the entire application
-  - profile query statements and compare across Query Engine versions
-  - produce flame graphs
-  - **"Benchy Portal"** — a dashboard showing Query and Memory (AI cut build time)
+- **Name it clearly up front:** the whole suite is **Benchy** — after the little
+  boat 3D printers print to benchmark themselves.
+- **The real unlock (lead with this):** custom **Skill files** that taught the AI
+  not just how to do a task, but how to write **Python scripts to automate** it,
+  so the work became repeatable rather than one-off.
+- Built custom Ditto SDK versions on the fly for specific processor types.
+- The suite could: swap SDK versions and platforms, hold a library of benchmarks
+  across sample datasets, test query performance, instrument the app, profile
+  statements across engine versions, produce flame graphs, and surface all of it
+  in **Benchy Portal**.
 - First version came together in a few hours; I code-reviewed and fixed a few
-  things. Ran the first benchmarks on local physical hardware — the numbers
-  weren't great.
-- Spoken color: gradle + adapter pattern to swap SDK/platform; Android-only focus
-  (that's what the prospect used); AI researched a fix for **thermal throttling**
-  on the bench hardware.
+  things.
+- Spoken color: gradle + adapter pattern to swap SDK/platform; Android-only focus,
+  since that's what the prospect used.
 
-## Slide 9 — Investigating with AI (measure)
+## `/8` — Thermals: "Same code. Different numbers." ✅ NEW
+
+- The step the deck was skipping: **the bench itself wasn't trustworthy.**
+- Started on a **Pixel Tablet** and a **Pixel 10**, picked as real representative
+  hardware. The numbers wouldn't hold still.
+- Diagram band 1 — what one PR test asks of the device: **45 queries × 60
+  iterations each (10 to warm up, 50 measured) × 3 runs = 8,100 executions + 135
+  DQL profiles.**
+- Diagram band 2 — what the numbers did. **UNSTABLE** on the handsets (standard
+  deviation all over the place; the spread swamped the change under test) vs.
+  **REPEATABLE** on cooled hardware (a difference meant the code changed). _No
+  chart here on purpose_ — see "nothing invented as if measured" above.
+- Diagram band 3 — what fixed it: AI found the slowdown tracked **elapsed time,
+  not the code under test**; swap to an SoC board with a desktop-grade cooler and
+  no battery; a week from Amazon.
+- Hardware named on-slide: **Orange Pi 6 Plus, Radxa, Minisforum MS-R1.**
+- Spoken color: we chased this for a while first, including cutting the dataset
+  size down, before AI named it as thermal throttling.
+- Kicker is `01 · Build` — it's about trusting the bench, not investigating yet.
+
+## `/9` — Investigating with AI (measure) ✅
 
 - Friday night. I'm not a query engineer and I'm new to the engine's codebase.
   Answer due Monday. Can't ask the team to explain the whole engine.
@@ -129,72 +157,106 @@ Edge-based database that syncs via a mesh network; SQL-like query language (DQL)
   2. **Profile** — DQL profiling pinpoints what the engine spends time on.
 - **Visual:** `benchy-profiling-zoom.png` — Benchy Portal's side-by-side
   execution-plan comparison (full scan of 400 rows → idScan returns 1; 32 ms →
-  433 µs). The artifact that helped the query team pinpoint problems.
+  433 µs).
 
-## Slide 9b ("AI drew the map") — the diagrams
+## `/10` — Instrument anything ✅ NEW
+
+- The "how you'd do this yourself" slide, for a developer who has never
+  instrumented anything. **Entirely generic — nothing Ditto-specific.**
+- Band 1: the pattern — `start = now()` / _the work you care about_ /
+  `record("load", now() − start)` — plus where probes pay off: entry point, every
+  boundary, inside per-item loops, the function you already suspect.
+- Band 2: what you get back — a waterfall where **width = time spent** and
+  **indent = the call stack**. That's the intuition most people are missing.
+- Band 3: the loop, with AI doing the tedious parts — ask where to measure, add
+  the probes, run the real thing once, hand the trace back.
+- Closer: your stack already ships this (OpenTelemetry, Perfetto, Xcode
+  Instruments, the browser's performance panel), and it works the same on an API
+  call, a screen, or a codebase you've never opened.
+
+## `/11` — "AI drew the map" (the diagrams) ✅
 
 - **First AI tip:** have AI turn each Perfetto trace into a **code-flow diagram**
   so I could see the whole path at once.
-- **The skepticism story (thesis beat):** the team assumed I'd had AI *scan the
-  code*. I hadn't — the diagrams came from **real traces**. That's when they
+- **The skepticism story (thesis beat):** the team assumed I'd had AI _scan the
+  code_. I hadn't — the diagrams came from **real traces**. That's when they
   trusted them. → Trust came from real data.
-- **InfoSec note:** the real AI diagram (`distinct-values-ditto.png`) exposes file
-  paths, function names, line numbers, and branch/ticket IDs — NOT shippable.
-  Decision: show a **clean, generic summary diagram** built in-deck (industry-
-  standard stages only: FFI → engine → planner → scan → project → distinct →
-  result, with hotspots), and say verbally that the real ones are far more
-  detailed. No source artifact ships.
+- **InfoSec — settled.** The real diagram (`distinct-values-ditto.png`) carries
+  source paths, symbol names, line numbers, ticket IDs, commit hashes, a branch
+  name, and a named-competitor benchmark. Not shippable, and no source artifact
+  ships. In its place, a generic execution-path diagram **written from scratch**
+  at the conceptual level: query gets in → async pipeline → what the trace
+  exposed → where the time went. The time budget is shown as **percentages rather
+  than absolute milliseconds**, and the competitor comparison is dropped
+  entirely. The caption says the real ones name every call in the path, down to
+  the line.
 
-## Slide 10 - How we fixed it
+## `/12` — How we fixed it ✅
 
-- Put a war room together of engineers including the query team, members from the SDK team, and members from other parts of engineering
-- We looked at improvements we were already working on and tried to get those done faster by using AI
-  - We knew we had a new encoding engine called Archive that would be a lot faster than the old one CBOR.
-- The query team changed the way we store tombstone metadata
-- The query team changed the internal storage/schema on how we stored data
-- Every PR went through the benchy tool before we even merged it so we could see the performance changes as soon as possible - this was managed by AI reading a text file of PR and commit Ids as everything was running in my local mesh lab
+- "It became a team sport" — a war room of query, SDK, and wider engineering.
+- We pulled improvements already on the roadmap forward, faster, with AI:
+  - the new **Archive** encoding engine replacing CBOR
+  - the query team changed how tombstone metadata is stored
+  - the query team changed the internal storage/schema
+- **Every PR went through Benchy before merge**, managed by AI reading a text
+  file of PR and commit IDs while everything ran in my local mesh lab.
 
-## Slide 11 — The payoff: 2,253 ms → 1.84 ms
+## `/13` — The payoff: 2,253 ms → 1.84 ms ✅
 
 - The `count_all` aggregation over the POS dataset.
-- Animated count-down from 2,253 ms to 1.84 ms; **1,226×** faster
-  (portal shows 1,225.88×). "Over two seconds → real time."
-- The specific fixes were covered generically on Slide 10 (no internals shown).
+- Animated count-down; **1,226×** faster (portal shows 1,225.88×). "Over two
+  seconds → real time."
+- The specific fixes stay generic — no internals shown.
 
-## Slide 12 — The whole board moved
+## `/14` — The whole board moved ✅
 
 - Not just one query: the same fixes lifted the entire aggregation workload.
-- Hero: `count-benchmarks.png` (cropped — no build labels / versions / hardware
+- Hero: `count-benchmarks.png` (cropped — no build labels, versions, or hardware
   codenames). `count_all` led at 1,226×; every other aggregation got faster too.
 
-## Slide 13 — What worked vs what didn't with AI
+## `/15` — What worked vs what didn't ✅
 
-- **Worked:**
-  - building tooling fast (SDK-from-source, harness, Benchy Portal, flame graphs)
-  - drawing code-flow diagrams from real traces
-  - narrowing down suspect code from profiling data
-  - researching hardware issues (thermal throttling)
-- **Didn't work (AI was only "OK" at investigating):**
-  - lacked context for *why* code worked the way it did — e.g. flagged
-    intentional logging code as "bad" when it wasn't
-  - a team of subagents trying speculative caching ideas we couldn't validate
-  - non-experts "vibe-coding" fixes to a query engine
-  - asking AI to fully understand DQL from the source alone
+- **Worked:** building tooling fast (SDK-from-source, harness, Benchy Portal,
+  flame graphs); drawing code-flow diagrams from real traces; narrowing suspect
+  code from profiling data; researching hardware issues (thermal throttling).
+- **Didn't work** (AI was only "OK" at investigating): lacked context for _why_
+  code worked the way it did — flagged intentional logging as "bad"; a team of
+  subagents trying speculative caching ideas we couldn't validate; non-experts
+  "vibe-coding" fixes to a query engine; asking AI to fully understand DQL from
+  the source alone.
 - The pattern: grounded + expert-driven = wins; ungrounded/speculative = misses.
-- This is the payoff of the "(More on that later.)" teaser on Slide 7.
 
-## Slide 14 — Takeaways / how it changed how we ship
+## `/16` — Takeaways / how it changed how we ship ✅
 
 - Heading: **Measure. Don't guess.**
 - 1. **Instrument first** — AI is only as good as the data you feed it.
 - 2. **Give AI the context** — AI can investigate too, but only with the same
-  understanding the authors have; in big codebases, invest in docs written for AI.
+     understanding the authors have; in big codebases, invest in docs written for
+     AI.
 - 3. **Make performance a habit** — every release now runs through Benchy before
-  it ships. (This is the "how it changed how we ship.")
+     it ships.
 - Closer: "The regression that ate a weekend? We'd catch it now — before it
   ships." + Thank you / Aaron LaBeau · Developer Advocate, Ditto.
 
 ---
+
+# Deck mechanics (for whoever edits this next)
+
+- **Inserting a slide is not a one-line change.** Order lives in App's `<Route>`
+  table, in `SlideNav`'s `ORDER`, and in the arrow-key handler of _every_ slide
+  from the insertion point on. Renumber all three or navigation silently skips
+  the new slide.
+- **Publishing:** any push to `main` deploys to GitHub Pages via
+  `.github/workflows/deploy.yml` →
+  https://ditto-examples.github.io/renderatl-2026-ai-dql/ — the repo is public,
+  so anything committed here is public.
+- **Phones get a reading mode:** the page scrolls (presentation mode is
+  fixed-viewport at ≥768px), type runs slightly larger than projector size, nav
+  collapses to one pill bottom-left plus swipe, and wide diagrams pan
+  horizontally instead of shrinking to unreadable.
+- **SVG text does not wrap.** Copy that outgrows its box silently draws outside
+  it. Each diagram notes its per-card character budget next to the copy — keep
+  new text under it.
 
 # Parked (not building slides for these)
 
