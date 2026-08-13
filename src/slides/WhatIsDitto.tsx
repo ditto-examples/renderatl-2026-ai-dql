@@ -133,6 +133,25 @@ export default function WhatIsDitto() {
             )
           })}
         </motion.div>
+
+        {/* Where the diagram came from — for anyone who wants the long version. */}
+        <motion.p
+          className="mt-4 text-sm text-text-tertiary"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.5 }}
+        >
+          More at{' '}
+          <a
+            href="https://docs.ditto.live/home/about-ditto"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-1 underline-offset-4 transition-opacity hover:opacity-70"
+            style={{ color: ACCENT }}
+          >
+            docs.ditto.live/home/about-ditto
+          </a>
+        </motion.p>
       </div>
     </SlideShell>
   )
